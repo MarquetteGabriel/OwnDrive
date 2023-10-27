@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int selectTab = 2;
+    private int currentId, selectTab = 2;
     private NavController navController;
 
     @Override
@@ -37,62 +37,47 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutHome.setOnClickListener(view -> {
             if(selectTab != 2)
             {
-                textViewFiles.setVisibility(View.GONE);
-                textViewProfile.setVisibility(View.GONE);
-                linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
-                linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
-
-                linearLayoutHome.setBackgroundResource(R.drawable.round_background);
-                textViewHome.setVisibility(View.VISIBLE);
-
-                ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-                scaleAnimation.setDuration(200);
-                scaleAnimation.setFillAfter(true);
-                linearLayoutHome.startAnimation(scaleAnimation);
-
-                selectTab = 2;
-                navController.navigate(R.id.filesFragment);
+                if(selectTab == 1)
+                {
+                    navController.navigate(R.id.action_treeFragment_to_filesFragment);
+                }
+                else if (selectTab == 3)
+                {
+                    navController.navigate(R.id.action_profileFragment_to_filesFragment);
+                }
+                else
+                {
+                    navController.navigate(R.id.filesFragment);
+                }
             }
         });
 
         linearLayoutFiles.setOnClickListener(view -> {
-            if(selectTab != 1)
+            if(selectTab == 2)
             {
-                textViewHome.setVisibility(View.GONE);
-                textViewProfile.setVisibility(View.GONE);
-                linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
-                linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
-
-                linearLayoutFiles.setBackgroundResource(R.drawable.round_background);
-                textViewFiles.setVisibility(View.VISIBLE);
-
-                ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-                scaleAnimation.setDuration(200);
-                scaleAnimation.setFillAfter(true);
-                linearLayoutFiles.startAnimation(scaleAnimation);
-
-                selectTab = 1;
+                navController.navigate(R.id.action_filesFragment_to_treeFragment);
+            }
+            else if (selectTab == 3)
+            {
+                navController.navigate(R.id.action_profileFragment_to_treeFragment);
+            }
+            else
+            {
                 navController.navigate(R.id.treeFragment);
             }
         });
 
         linearLayoutProfile.setOnClickListener(view -> {
-            if(selectTab != 3)
+            if(selectTab == 1)
             {
-                textViewFiles.setVisibility(View.GONE);
-                textViewHome.setVisibility(View.GONE);
-                linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
-                linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
-
-                linearLayoutProfile.setBackgroundResource(R.drawable.round_background);
-                textViewProfile.setVisibility(View.VISIBLE);
-
-                ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-                scaleAnimation.setDuration(200);
-                scaleAnimation.setFillAfter(true);
-                linearLayoutProfile.startAnimation(scaleAnimation);
-
-                selectTab = 3;
+                navController.navigate(R.id.action_treeFragment_to_profileFragment);
+            }
+            else if (selectTab == 2)
+            {
+                navController.navigate(R.id.action_filesFragment_to_profileFragment);
+            }
+            else
+            {
                 navController.navigate(R.id.profileFragment);
             }
         });
@@ -100,21 +85,76 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         navController = navHostFragment.getNavController();
+
+        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            currentId = navDestination.getId();
+            if(currentId == R.id.filesFragment)
+            {
+                if(selectTab != 2)
+                {
+                    selectTab = 2;
+                    textViewFiles.setVisibility(View.GONE);
+                    textViewProfile.setVisibility(View.GONE);
+                    linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
+                    linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
+                    imageViewFiles.setImageResource(R.drawable.button_folder);
+                    imageViewProfile.setImageResource(R.drawable.button_profile);
+
+                    linearLayoutHome.setBackgroundResource(R.drawable.round_background);
+                    imageViewHome.setImageResource(R.drawable.button_home_on);
+                    textViewHome.setVisibility(View.VISIBLE);
+
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+                    scaleAnimation.setDuration(300);
+                    scaleAnimation.setFillAfter(true);
+                    linearLayoutHome.startAnimation(scaleAnimation);
+                }
+            }
+            else if (currentId == R.id.treeFragment)
+            {
+                if(selectTab != 1)
+                {
+                    selectTab = 1;
+                    textViewHome.setVisibility(View.GONE);
+                    textViewProfile.setVisibility(View.GONE);
+                    linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
+                    linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
+                    imageViewHome.setImageResource(R.drawable.button_home);
+                    imageViewProfile.setImageResource(R.drawable.button_profile);
+
+                    linearLayoutFiles.setBackgroundResource(R.drawable.round_background);
+                    imageViewFiles.setImageResource(R.drawable.button_folder_on);
+                    textViewFiles.setVisibility(View.VISIBLE);
+
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+                    scaleAnimation.setDuration(300);
+                    scaleAnimation.setFillAfter(true);
+                    linearLayoutFiles.startAnimation(scaleAnimation);
+                }
+
+                }
+            else if (currentId == R.id.profileFragment)
+            {
+                if(selectTab != 3) {
+                    selectTab = 3;
+                    textViewFiles.setVisibility(View.GONE);
+                    textViewHome.setVisibility(View.GONE);
+                    linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
+                    linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
+                    imageViewFiles.setImageResource(R.drawable.button_folder);
+                    imageViewHome.setImageResource(R.drawable.button_home);
+
+
+                    linearLayoutProfile.setBackgroundResource(R.drawable.round_background);
+                    imageViewProfile.setImageResource(R.drawable.button_profile_on);
+                    textViewProfile.setVisibility(View.VISIBLE);
+
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+                    scaleAnimation.setDuration(300);
+                    scaleAnimation.setFillAfter(true);
+                    linearLayoutProfile.startAnimation(scaleAnimation);
+                }
+                }
+        });
     }
-
-    public void onClickFragProfile(View v)
-    {
-
-    }
-
-    public void onClickFragFiles(View v)
-    {
-
-    }
-
-    public void onClickFragTree(View v)
-    {
-
-    }
-
 }

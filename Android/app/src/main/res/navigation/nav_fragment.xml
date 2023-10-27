@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_fragment"
+    app:startDestination="@id/filesFragment">
+
+    <fragment
+        android:id="@+id/filesFragment"
+        android:name="fr.pamarg.owndriveapp.view.FilesFragment"
+        android:label="FilesFragment" >
+        <action
+            android:id="@+id/action_filesFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_filesFragment_to_treeFragment"
+            app:destination="@id/treeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="fr.pamarg.owndriveapp.view.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_filesFragment"
+            app:destination="@id/filesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/treeFragment"
+        android:name="fr.pamarg.owndriveapp.view.TreeFragment"
+        android:label="fragment_tree"
+        tools:layout="@layout/fragment_tree" >
+        <action
+            android:id="@+id/action_treeFragment_to_filesFragment"
+            app:destination="@id/filesFragment" />
+        <action
+            android:id="@+id/action_treeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+</navigation>

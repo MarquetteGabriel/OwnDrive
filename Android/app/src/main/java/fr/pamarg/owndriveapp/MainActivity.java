@@ -9,13 +9,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private int currentId, selectTab = 2;
     private NavController navController;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         final TextView textViewFiles = findViewById(R.id.textViewFiles);
         final TextView textViewHome = findViewById(R.id.textViewHome);
         final TextView textViewProfile = findViewById(R.id.textViewProfile);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigationViewFiles);
 
         linearLayoutHome.setOnClickListener(view -> {
             if(selectTab != 2)
@@ -53,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         linearLayoutFiles.setOnClickListener(view -> {
+
+            drawerLayout.openDrawer(GravityCompat.START);
+
+            /*
             if(selectTab == 2)
             {
                 navController.navigate(R.id.action_filesFragment_to_treeFragment);
@@ -64,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             else
             {
                 navController.navigate(R.id.treeFragment);
-            }
+            }*/
         });
 
         linearLayoutProfile.setOnClickListener(view -> {
@@ -95,23 +108,26 @@ public class MainActivity extends AppCompatActivity {
                     selectTab = 2;
                     textViewFiles.setVisibility(View.GONE);
                     textViewProfile.setVisibility(View.GONE);
+                    drawerLayout.setVisibility(View.GONE);
                     linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
                     linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
                     imageViewFiles.setImageResource(R.drawable.button_folder);
                     imageViewProfile.setImageResource(R.drawable.button_profile);
+                    drawerLayout.closeDrawer(GravityCompat.START);
 
                     linearLayoutHome.setBackgroundResource(R.drawable.round_background);
                     imageViewHome.setImageResource(R.drawable.button_home_on);
                     textViewHome.setVisibility(View.VISIBLE);
 
-                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-                    scaleAnimation.setDuration(300);
-                    scaleAnimation.setFillAfter(true);
-                    linearLayoutHome.startAnimation(scaleAnimation);
+                    //ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+                    //scaleAnimation.setDuration(300);
+                    //scaleAnimation.setFillAfter(true);
+                    //linearLayoutHome.startAnimation(scaleAnimation);
                 }
             }
             else if (currentId == R.id.treeFragment)
             {
+
                 if(selectTab != 1)
                 {
                     selectTab = 1;
@@ -139,10 +155,12 @@ public class MainActivity extends AppCompatActivity {
                     selectTab = 3;
                     textViewFiles.setVisibility(View.GONE);
                     textViewHome.setVisibility(View.GONE);
+                    drawerLayout.setVisibility(View.GONE);
                     linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
                     linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
                     imageViewFiles.setImageResource(R.drawable.button_folder);
                     imageViewHome.setImageResource(R.drawable.button_home);
+                    drawerLayout.closeDrawer(GravityCompat.START);
 
 
                     linearLayoutProfile.setBackgroundResource(R.drawable.round_background);
@@ -156,5 +174,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 }
         });
+
+
+
     }
 }

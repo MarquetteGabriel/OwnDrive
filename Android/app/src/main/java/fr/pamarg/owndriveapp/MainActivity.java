@@ -1,6 +1,8 @@
 package fr.pamarg.owndriveapp;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -8,20 +10,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import fr.pamarg.owndriveapp.view.treestructure.DrawerAdapter;
+import fr.pamarg.owndriveapp.view.treestructure.DrawerItem;
+
+public class MainActivity extends AppCompatActivity implements DrawerAdapter.DrawerItemClickedListener{
 
     private int currentId, selectTab = 2;
     private NavController navController;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    private ActionBarDrawerToggle drawerToggle;
+    private final List<DrawerItem> drawerItemList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +53,82 @@ public class MainActivity extends AppCompatActivity {
         final TextView textViewHome = findViewById(R.id.textViewHome);
         final TextView textViewProfile = findViewById(R.id.textViewProfile);
 
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navigationViewFiles);
+        RecyclerView recyclerView = findViewById(R.id.drawer_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DrawerAdapter drawerAdapter = new DrawerAdapter(this, drawerItemList, this);
+        recyclerView.setAdapter(drawerAdapter);
+
+        View headerView = LayoutInflater.from(this).inflate(R.layout.drawer_header, recyclerView, false);
+        drawerAdapter.addHeaderView(headerView);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_drawer, R.string.close_drawer)
+        {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                if(currentId == R.id.profileFragment)
+                {
+                    selectTab = 3;
+                    textViewFiles.setVisibility(View.GONE);
+                    textViewHome.setVisibility(View.GONE);
+                    linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
+                    linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
+                    imageViewFiles.setImageResource(R.drawable.button_folder);
+                    imageViewHome.setImageResource(R.drawable.button_home);
+                    
+                    linearLayoutProfile.setBackgroundResource(R.drawable.round_background);
+                    imageViewProfile.setImageResource(R.drawable.button_profile_on);
+                    textViewProfile.setVisibility(View.VISIBLE);
+
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+                    scaleAnimation.setDuration(300);
+                    scaleAnimation.setFillAfter(true);
+                    linearLayoutProfile.startAnimation(scaleAnimation);
+
+                }
+                else if(currentId == R.id.filesFragment)
+                {
+                    selectTab = 2;
+                    textViewFiles.setVisibility(View.GONE);
+                    textViewProfile.setVisibility(View.GONE);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
+                    linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
+                    imageViewFiles.setImageResource(R.drawable.button_folder);
+                    imageViewProfile.setImageResource(R.drawable.button_profile);
+
+                    linearLayoutHome.setBackgroundResource(R.drawable.round_background);
+                    imageViewHome.setImageResource(R.drawable.button_home_on);
+                    textViewHome.setVisibility(View.VISIBLE);
+
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+                    scaleAnimation.setDuration(300);
+                    scaleAnimation.setFillAfter(true);
+                    linearLayoutHome.startAnimation(scaleAnimation);
+                }
+            }
+        };
+        drawerLayout.addDrawerListener(drawerToggle);
+
 
         linearLayoutHome.setOnClickListener(view -> {
             if(selectTab != 2)
             {
-                if(selectTab == 1)
+                if (selectTab == 3)
                 {
-                    navController.navigate(R.id.action_treeFragment_to_filesFragment);
-                }
-                else if (selectTab == 3)
-                {
+                    if(drawerLayout.isDrawerOpen(GravityCompat.START))
+                    {
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                    }
                     navController.navigate(R.id.action_profileFragment_to_filesFragment);
                 }
                 else
                 {
+                    if(drawerLayout.isDrawerOpen(GravityCompat.START))
+                    {
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                    }
                     navController.navigate(R.id.filesFragment);
                 }
             }
@@ -63,8 +136,27 @@ public class MainActivity extends AppCompatActivity {
 
         linearLayoutFiles.setOnClickListener(view -> {
 
-            drawerLayout.openDrawer(GravityCompat.START);
+            selectTab = 1;
 
+            drawerItemList.add(new DrawerItem("name", R.drawable.new_file, false));
+            drawerAdapter.notifyDataSetChanged();
+
+            textViewHome.setVisibility(View.GONE);
+            textViewProfile.setVisibility(View.GONE);
+            linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
+            linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
+            imageViewHome.setImageResource(R.drawable.button_home);
+            imageViewProfile.setImageResource(R.drawable.button_profile);
+
+            linearLayoutFiles.setBackgroundResource(R.drawable.round_background);
+            imageViewFiles.setImageResource(R.drawable.button_folder_on);
+            textViewFiles.setVisibility(View.VISIBLE);
+
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+            scaleAnimation.setDuration(300);
+            scaleAnimation.setFillAfter(true);
+            linearLayoutFiles.startAnimation(scaleAnimation);
+            drawerLayout.openDrawer(GravityCompat.START);
             /*
             if(selectTab == 2)
             {
@@ -81,16 +173,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         linearLayoutProfile.setOnClickListener(view -> {
-            if(selectTab == 1)
+            if (selectTab == 2)
             {
-                navController.navigate(R.id.action_treeFragment_to_profileFragment);
-            }
-            else if (selectTab == 2)
-            {
+                if(drawerLayout.isDrawerOpen(GravityCompat.START))
+                {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
                 navController.navigate(R.id.action_filesFragment_to_profileFragment);
             }
             else
             {
+                if(drawerLayout.isDrawerOpen(GravityCompat.START))
+                {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
                 navController.navigate(R.id.profileFragment);
             }
         });
@@ -108,59 +204,33 @@ public class MainActivity extends AppCompatActivity {
                     selectTab = 2;
                     textViewFiles.setVisibility(View.GONE);
                     textViewProfile.setVisibility(View.GONE);
-                    drawerLayout.setVisibility(View.GONE);
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
                     linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
                     imageViewFiles.setImageResource(R.drawable.button_folder);
                     imageViewProfile.setImageResource(R.drawable.button_profile);
-                    drawerLayout.closeDrawer(GravityCompat.START);
 
                     linearLayoutHome.setBackgroundResource(R.drawable.round_background);
                     imageViewHome.setImageResource(R.drawable.button_home_on);
                     textViewHome.setVisibility(View.VISIBLE);
 
-                    //ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-                    //scaleAnimation.setDuration(300);
-                    //scaleAnimation.setFillAfter(true);
-                    //linearLayoutHome.startAnimation(scaleAnimation);
-                }
-            }
-            else if (currentId == R.id.treeFragment)
-            {
-
-                if(selectTab != 1)
-                {
-                    selectTab = 1;
-                    textViewHome.setVisibility(View.GONE);
-                    textViewProfile.setVisibility(View.GONE);
-                    linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
-                    linearLayoutProfile.setBackgroundColor(getColor(android.R.color.transparent));
-                    imageViewHome.setImageResource(R.drawable.button_home);
-                    imageViewProfile.setImageResource(R.drawable.button_profile);
-
-                    linearLayoutFiles.setBackgroundResource(R.drawable.round_background);
-                    imageViewFiles.setImageResource(R.drawable.button_folder_on);
-                    textViewFiles.setVisibility(View.VISIBLE);
-
-                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.8f, 1.0f, 1f, 1f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
                     scaleAnimation.setDuration(300);
                     scaleAnimation.setFillAfter(true);
-                    linearLayoutFiles.startAnimation(scaleAnimation);
+                    linearLayoutHome.startAnimation(scaleAnimation);
                 }
-
-                }
+            }
             else if (currentId == R.id.profileFragment)
             {
                 if(selectTab != 3) {
                     selectTab = 3;
                     textViewFiles.setVisibility(View.GONE);
                     textViewHome.setVisibility(View.GONE);
-                    drawerLayout.setVisibility(View.GONE);
                     linearLayoutFiles.setBackgroundColor(getColor(android.R.color.transparent));
                     linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
                     imageViewFiles.setImageResource(R.drawable.button_folder);
                     imageViewHome.setImageResource(R.drawable.button_home);
-                    drawerLayout.closeDrawer(GravityCompat.START);
+
 
 
                     linearLayoutProfile.setBackgroundResource(R.drawable.round_background);
@@ -178,4 +248,45 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(drawerToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onItemClicked(DrawerItem drawerItem) {
+        switch (drawerItem.getName())
+        {
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START))
+        {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+    }
+
+
 }

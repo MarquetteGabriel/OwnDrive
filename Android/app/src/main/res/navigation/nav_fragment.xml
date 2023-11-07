@@ -16,13 +16,6 @@
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right" />
-        <action
-            android:id="@+id/action_filesFragment_to_treeFragment"
-            app:destination="@id/treeFragment"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -36,32 +29,5 @@
             app:exitAnim="@anim/to_right"
             app:popEnterAnim="@anim/from_right"
             app:popExitAnim="@anim/to_left" />
-        <action
-            android:id="@+id/action_profileFragment_to_treeFragment"
-            app:destination="@id/treeFragment"
-            app:enterAnim="@anim/from_left"
-            app:exitAnim="@anim/to_right"
-            app:popEnterAnim="@anim/from_right"
-            app:popExitAnim="@anim/to_left" />
-    </fragment>
-    <fragment
-        android:id="@+id/treeFragment"
-        android:name="fr.pamarg.owndriveapp.view.TreeFragment"
-        android:label="fragment_tree"
-        tools:layout="@layout/fragment_tree" >
-        <action
-            android:id="@+id/action_treeFragment_to_filesFragment"
-            app:destination="@id/filesFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
-        <action
-            android:id="@+id/action_treeFragment_to_profileFragment"
-            app:destination="@id/profileFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
     </fragment>
 </navigation>

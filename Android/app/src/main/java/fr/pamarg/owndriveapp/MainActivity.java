@@ -26,6 +26,7 @@ import java.util.List;
 
 import fr.pamarg.owndriveapp.view.treestructure.DrawerAdapter;
 import fr.pamarg.owndriveapp.view.treestructure.DrawerItem;
+import fr.pamarg.owndriveapp.view.treestructure.SubItems;
 
 public class MainActivity extends AppCompatActivity implements DrawerAdapter.DrawerItemClickedListener{
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
                     linearLayoutHome.setBackgroundColor(getColor(android.R.color.transparent));
                     imageViewFiles.setImageResource(R.drawable.button_folder);
                     imageViewHome.setImageResource(R.drawable.button_home);
-                    
+
                     linearLayoutProfile.setBackgroundResource(R.drawable.round_background);
                     imageViewProfile.setImageResource(R.drawable.button_profile_on);
                     textViewProfile.setVisibility(View.VISIBLE);
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
 
             selectTab = 1;
 
-            drawerItemList.add(new DrawerItem("name", R.drawable.new_file, false));
+            addItems();
             drawerAdapter.notifyDataSetChanged();
 
             textViewHome.setVisibility(View.GONE);
@@ -286,6 +287,40 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
         {
             super.onBackPressed();
         }
+    }
+
+    private void addItems()
+    {
+        drawerItemList.add(new DrawerItem("Dossier", R.drawable.button_folder));
+
+        DrawerItem item = new DrawerItem("Autre", R.drawable.button_folder, true);
+        DrawerItem item2 = new DrawerItem("Autre - Sub", R.drawable.button_folder, true);
+        DrawerItem item3 = new DrawerItem("Autre - Sub - Sub", R.drawable.button_folder, true);
+        SubItems subItem1 = new SubItems("Sous-élément 1", R.drawable.new_file);
+        SubItems subItem2 = new SubItems("Sous-élément 2", R.drawable.new_file);
+        SubItems subItem31 = new SubItems("Sous-élément 31", R.drawable.new_file);
+        SubItems subItem32 = new SubItems("Sous-élément 32", R.drawable.new_file);
+        SubItems subItem33 = new SubItems("Sous-élément 33", R.drawable.new_file);
+        SubItems subItem34 = new SubItems("Sous-élément 34", R.drawable.new_file);
+        SubItems subItem35 = new SubItems("Sous-élément 35", R.drawable.new_file);
+        SubItems subItem36 = new SubItems("Sous-élément 36", R.drawable.new_file);
+        SubItems subItem37 = new SubItems("Sous-élément 37", R.drawable.new_file);
+        item.addSubItem(subItem1);
+        item2.addSubItem(subItem2);
+        item3.addSubItem(subItem31);
+        item3.addSubItem(subItem32);
+        item3.addSubItem(subItem33);
+        item3.addSubItem(subItem34);
+        item3.addSubItem(subItem35);
+        item3.addSubItem(subItem36);
+        item3.addSubItem(subItem37);
+        item2.addSubFolder(item3);
+        item.addSubFolder(item2);
+
+        drawerItemList.add(item);
+        drawerItemList.add(new DrawerItem("Autre 2", R.drawable.button_folder));
+        drawerItemList.add(new DrawerItem("Dossier", R.drawable.button_folder));
+
     }
 
 

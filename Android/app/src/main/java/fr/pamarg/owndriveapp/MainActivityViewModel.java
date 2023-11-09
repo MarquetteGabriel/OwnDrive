@@ -13,6 +13,17 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     public void setIpAddress(String ipAddress) {
-        this.ipAddress.setValue(ipAddress);
+        this.ipAddress.postValue(ipAddress);
     }
+
+    private final MutableLiveData<Boolean> state = new MutableLiveData<>();
+
+    public LiveData<Boolean> getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state.postValue(state);
+    }
+
 }

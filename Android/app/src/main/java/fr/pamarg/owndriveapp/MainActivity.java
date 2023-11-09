@@ -1,6 +1,10 @@
 package fr.pamarg.owndriveapp;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +18,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import fr.pamarg.owndriveapp.Network.Connection;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -37,10 +47,50 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
     private final List<DrawerItem> drawerItemList = new ArrayList<>();
 
 
+
+    private Connection connection;
+    MainActivityViewModel mainActivityViewModel;
+    private ExecutorService executorService;
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        textView = findViewById(R.id.textView);
+
+        executorService = Executors.newSingleThreadExecutor();
+        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        connection = new Connection(this, mainActivityViewModel);
+    }
+
+    public void onlickConnect(View v) {
+        try {
+            String ip = ((TextView) findViewById(R.id.editTextTextPersonName)).getText().toString();
+            Integer port = Integer.parseInt(((TextView) findViewById(R.id.editTextTextPersonName2)).getText().toString());
+            connection.connect(ip, port);
+        } catch (Exception e) {
+            Toast.makeText(this, "Erreur insert", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void checkState(View v)
+    {
+        if(Boolean.TRUE.equals(mainActivityViewModel.getState().getValue()))
+        {
+            Toast.makeText(this, "Connect", Toast.LENGTH_LONG).show();
+        }
+        else if(Boolean.FALSE.equals(mainActivityViewModel.getState().getValue()))
+        {
+            Toast.makeText(this, "No Connect", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onClickgetIp(View v)
+    {
+        connection.getIpAddress();
+        textView.setText(mainActivityViewModel.getIpAddress().getValue());
+        ((EditText) findViewById(R.id.editTextTextPersonName)).setText(mainActivityViewModel.getIpAddress().getValue());
+    }
 
         final LinearLayout linearLayoutFiles = findViewById(R.id.linearLayoutFiles);
         final LinearLayout linearLayoutHome = findViewById(R.id.linearLayoutHome);

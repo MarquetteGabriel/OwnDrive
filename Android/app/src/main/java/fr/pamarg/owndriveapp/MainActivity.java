@@ -1,10 +1,5 @@
 package fr.pamarg.owndriveapp;
 
-import android.net.ConnectivityManager;
-import android.net.LinkAddress;
-import android.net.LinkProperties;
-import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +9,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -62,34 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickgetIp(View v)
     {
-        getIpAddress();
+        connection.getIpAddress();
+        textView.setText(mainActivityViewModel.getIpAddress().getValue());
+        ((EditText) findViewById(R.id.editTextTextPersonName)).setText(mainActivityViewModel.getIpAddress().getValue());
     }
-
-    public void getIpAddress()
-    {
-        Runnable runnable = () -> {
-            ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
-            Network network = connectivityManager.getActiveNetwork();
-            LinkProperties linkProperties = connectivityManager.getLinkProperties(network);
-            if(connectivityManager.getNetworkCapabilities(network).hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
-            {
-                for (LinkAddress address : linkProperties.getLinkAddresses())
-                {
-                    if (!Objects.requireNonNull(address.getAddress().getHostAddress()).contains(":"))
-                    {
-                        String ipaddress = address.getAddress().getHostAddress();
-                        mainActivityViewModel.setIpAddress(ipaddress);
-                        runOnUiThread(() -> {
-                            textView.setText(mainActivityViewModel.getIpAddress().getValue());
-                            ((EditText) findViewById(R.id.editTextTextPersonName)).setText(mainActivityViewModel.getIpAddress().getValue());
-                        });
-                        break;
-                    }
-                }
-                String ipname = linkProperties.getDomains();
-            }
-        };
-        executorService.submit(runnable);
-    }
-
 }

@@ -17,7 +17,7 @@ public class ConnectionTest
     public void getIpAddressTest()
     {
         MainActivityViewModel mainActivityViewModel = new MainActivityViewModel();
-        Connection connection = new Connection(InstrumentationRegistry.getInstrumentation().getContext());
+        Connection connection = new Connection(InstrumentationRegistry.getInstrumentation().getContext(), mainActivityViewModel);
         connection.getIpAddress();
         String regexPattern = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
         Pattern pattern = Pattern.compile(regexPattern);

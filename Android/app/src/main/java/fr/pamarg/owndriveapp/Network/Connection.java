@@ -1,11 +1,17 @@
 package fr.pamarg.owndriveapp.Network;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.LinkAddress;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.util.Log;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -56,5 +62,29 @@ public class Connection
             }
         };
         executorService.execute(runnable);
+    }
+
+
+    public void getIpAddress()
+    {
+        Runnable runnable = () -> {
+            ConnectivityManager connectivityManager = context.getSystemService(ConnectivityManager.class);
+            Network network = connectivityManager.getActiveNetwork();
+            LinkProperties linkProperties = connectivityManager.getLinkProperties(network);
+            if(connectivityManager.getNetworkCapabilities(network).hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
+            {
+                for (LinkAddress address : linkProperties.getLinkAddresses())
+                {
+                    if (!Objects.requireNonNull(address.getAddress().getHostAddress()).contains(":"))
+                    {
+                        String ipaddress = address.getAddress().getHostAddress();
+                        mainActivityViewModel.setIpAddress(ipaddress);
+                        break;
+                    }
+                }
+                String ipname = linkProperties.getDomains();
+            }
+        };
+        executorService.submit(runnable);
     }
 }

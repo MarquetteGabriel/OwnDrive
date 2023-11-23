@@ -1,24 +1,21 @@
-package fr.pamarg.owndriveapp.view;
+package fr.pamarg.owndriveapp.model;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import static org.junit.Assert.assertEquals;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import android.os.Environment;
+
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import fr.pamarg.owndriveapp.R;
-import fr.pamarg.owndriveapp.model.JsonManager;
 import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
 
-public class FilesFragment extends Fragment
-{
+public class JsonManagerTest {
 
     String content = "{\n" +
             "  \"file_manager\": {\n" +
@@ -69,30 +66,25 @@ public class FilesFragment extends Fragment
     File jsonFile;
     String fileName = "tree.json";
     MainActivityViewModel mainActivityViewModel;
-    public FilesFragment() {
-        // Required empty public constructor
+
+
+    @Before
+    public void setUp() throws Exception
+    {
+        jsonFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(), fileName);
+        jsonFile.setWritable(true);
+        jsonFile.setReadable(true);
+
+        FileWriter fileWriter = new FileWriter(jsonFile, true);
+        fileWriter.write(content);
+        fileWriter.close();
+        mainActivityViewModel = new MainActivityViewModel();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_files, container, false);
-        mainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
-        LinearLayout button = view.findViewById(R.id.add_folder);
-        button.setOnClickListener(view1 -> {
-            JsonManager.readDatas(requireActivity().getApplicationContext(), mainActivityViewModel);
-        });
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    @Test
+    public void readDatasTest() throws IOException {
+        JsonManager.readDatas(InstrumentationRegistry.getInstrumentation().getContext(), mainActivityViewModel);
+        assertEquals(content, mainActivityViewModel.getTreeFolders());
     }
 
 

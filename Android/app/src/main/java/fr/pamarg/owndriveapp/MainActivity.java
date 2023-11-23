@@ -1,6 +1,8 @@
 package fr.pamarg.owndriveapp;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,21 +16,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import fr.pamarg.owndriveapp.Network.Connection;
+import fr.pamarg.owndriveapp.model.JsonManager;
+import fr.pamarg.owndriveapp.model.directoryfiles.Folders;
 import fr.pamarg.owndriveapp.view.treestructure.DrawerAdapter;
-import fr.pamarg.owndriveapp.view.treestructure.DrawerItem;
-import fr.pamarg.owndriveapp.view.treestructure.SubItems;
+import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity implements DrawerAdapter.DrawerItemClickedListener{
 
@@ -36,9 +46,53 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
     private NavController navController;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private final List<DrawerItem> drawerItemList = new ArrayList<>();
+    private final List<Object> drawerItemList = new ArrayList<>();
 
-
+    String content = "{\n" +
+            "  \"file_manager\": {\n" +
+            "    \"root_directory\": \"/home/user/documents\",\n" +
+            "    \"current_directory\": \"/home/user/documents/work\",\n" +
+            "    \"files\": [\n" +
+            "      {\n" +
+            "        \"name\": \"file1.txt\",\n" +
+            "        \"type\": \"text\",\n" +
+            "        \"size\": \"1024 KB\",\n" +
+            "        \"created_at\": \"2023-01-01T12:00:00Z\",\n" +
+            "        \"modified_at\": \"2023-01-05T14:30:00Z\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"name\": \"file2.jpg\",\n" +
+            "        \"type\": \"image\",\n" +
+            "        \"size\": \"2048 KB\",\n" +
+            "        \"created_at\": \"2023-02-10T09:45:00Z\",\n" +
+            "        \"modified_at\": \"2023-02-12T11:20:00Z\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"name\": \"folder1\",\n" +
+            "        \"type\": \"directory\",\n" +
+            "        \"size\": \"N/A\",\n" +
+            "        \"created_at\": \"2023-03-20T15:10:00Z\",\n" +
+            "        \"modified_at\": \"2023-03-20T15:10:00Z\",\n" +
+            "        \"contents\": [\n" +
+            "          {\n" +
+            "            \"name\": \"subfile1.txt\",\n" +
+            "            \"type\": \"text\",\n" +
+            "            \"size\": \"512 KB\",\n" +
+            "            \"created_at\": \"2023-03-20T15:15:00Z\",\n" +
+            "            \"modified_at\": \"2023-03-20T15:45:00Z\"\n" +
+            "          },\n" +
+            "          {\n" +
+            "            \"name\": \"subfile2.txt\",\n" +
+            "            \"type\": \"text\",\n" +
+            "            \"size\": \"768 KB\",\n" +
+            "            \"created_at\": \"2023-03-20T15:20:00Z\",\n" +
+            "            \"modified_at\": \"2023-03-20T15:50:00Z\"\n" +
+            "          }\n" +
+            "        ]\n" +
+            "      }\n" +
+            "    ]\n" +
+            "  }\n" +
+            "}";
 
     private Connection connection;
     MainActivityViewModel mainActivityViewModel;
@@ -48,6 +102,17 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Request Permissions
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+            return;
+        }
 
         final LinearLayout linearLayoutFiles = findViewById(R.id.linearLayoutFiles);
         final LinearLayout linearLayoutHome = findViewById(R.id.linearLayoutHome);
@@ -146,6 +211,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
 
             selectTab = 1;
 
+            //JsonManager.readDatas(this, mainActivityViewModel);
+            JsonManager.jsonAnalyser(this, mainActivityViewModel);
             addItems();
             drawerAdapter.notifyDataSetChanged();
 
@@ -250,11 +317,11 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
                     scaleAnimation.setFillAfter(true);
                     linearLayoutProfile.startAnimation(scaleAnimation);
                 }
-                }
+            }
         });
 
 
-
+        addFiles();
     }
 
 
@@ -275,8 +342,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
 
 
     @Override
-    public void onItemClicked(DrawerItem drawerItem) {
-        switch (drawerItem.getName())
+    public void onItemClicked(Folders folders) {
+        switch (folders.getName())
         {
             default:
                 break;
@@ -298,37 +365,30 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
 
     private void addItems()
     {
-        drawerItemList.add(new DrawerItem("Dossier", R.drawable.button_folder));
-
-        DrawerItem item = new DrawerItem("Autre", R.drawable.button_folder, true);
-        DrawerItem item2 = new DrawerItem("Autre - Sub", R.drawable.button_folder, true);
-        DrawerItem item3 = new DrawerItem("Autre - Sub - Sub", R.drawable.button_folder, true);
-        SubItems subItem1 = new SubItems("Sous-élément 1", R.drawable.new_file);
-        SubItems subItem2 = new SubItems("Sous-élément 2", R.drawable.new_file);
-        SubItems subItem31 = new SubItems("Sous-élément 31", R.drawable.new_file);
-        SubItems subItem32 = new SubItems("Sous-élément 32", R.drawable.new_file);
-        SubItems subItem33 = new SubItems("Sous-élément 33", R.drawable.new_file);
-        SubItems subItem34 = new SubItems("Sous-élément 34", R.drawable.new_file);
-        SubItems subItem35 = new SubItems("Sous-élément 35", R.drawable.new_file);
-        SubItems subItem36 = new SubItems("Sous-élément 36", R.drawable.new_file);
-        SubItems subItem37 = new SubItems("Sous-élément 37", R.drawable.new_file);
-        item.addSubItem(subItem1);
-        item2.addSubItem(subItem2);
-        item3.addSubItem(subItem31);
-        item3.addSubItem(subItem32);
-        item3.addSubItem(subItem33);
-        item3.addSubItem(subItem34);
-        item3.addSubItem(subItem35);
-        item3.addSubItem(subItem36);
-        item3.addSubItem(subItem37);
-        item2.addSubFolder(item3);
-        item.addSubFolder(item2);
-
-        drawerItemList.add(item);
-        drawerItemList.add(new DrawerItem("Autre 2", R.drawable.button_folder));
-        drawerItemList.add(new DrawerItem("Dossier", R.drawable.button_folder));
-
+        drawerItemList.clear();
+        drawerItemList.add(mainActivityViewModel.getTreeFolders().getValue());
     }
 
+    void addFiles()
+    {
+        File jsonFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(), "tree.json");
+        if (!jsonFile.exists()) {
+            try {
+                jsonFile.createNewFile();
+                jsonFile.setWritable(true);
+                jsonFile.setReadable(true);
+                BufferedWriter writer = new BufferedWriter(new FileWriter(jsonFile, true));
+
+                if (jsonFile.length() > 0) {
+                    writer.newLine();
+                }
+                writer.write(content);
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
 }

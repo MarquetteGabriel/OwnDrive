@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import fr.pamarg.owndriveapp.R;
+import fr.pamarg.owndriveapp.model.directoryfiles.Files;
+import fr.pamarg.owndriveapp.model.directoryfiles.Folders;
 
 public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
@@ -20,16 +22,17 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int VIEW_TYPE_HEADER = 0;
     private final int VIEW_TYPE_ITEM = 1;
     private final Context context;
-    private final List<DrawerItem> drawerItemList;
+    private final List<Object> drawerItemList;
     private final DrawerItemClickedListener listener;
     private View HeaderView;
+    private int paddingFolders;
 
     public interface DrawerItemClickedListener
     {
-        void onItemClicked(DrawerItem drawerItem);
+        void onItemClicked(Folders folders);
     }
 
-    public DrawerAdapter(Context context, List<DrawerItem> drawerItemList, DrawerItemClickedListener listener)
+    public DrawerAdapter(Context context, List<Object> drawerItemList, DrawerItemClickedListener listener)
     {
         this.context = context;
         this.drawerItemList = drawerItemList;
@@ -57,8 +60,19 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         {}
         else
         {
-            DrawerItem drawerItem = drawerItemList.get(position - 1);
-            ((ItemViewHolder) holder).bind(drawerItem);
+            Object object = drawerItemList.get(position - 1);
+            int padding;
+            if(object.getClass() == Folders.class)
+            {
+                padding = ((Folders) object).getPadding();
+            }
+            else
+            {
+                padding = ((Files) object).getPadding();
+            }
+            ((ItemViewHolder) holder).bind(drawerItemList.get(position - 1));
+            ((ItemViewHolder) holder).imageView.setPadding(padding,0,0,0);
+            ((ItemViewHolder) holder).textView.setPadding(10, 0, 0, 0);
         }
     }
 
@@ -107,64 +121,78 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             imageView = view.findViewById(R.id.item_icon);
         }
 
-        public void bind(DrawerItem drawerItem)
+        public void bind(Object object)
         {
-            textView.setText(drawerItem.getName());
-            imageView.setImageResource(drawerItem.getIcon());
+            if(object.getClass() == Folders.class)
+            {
+                textView.setText(((Folders) object).getName());
+                imageView.setImageResource(((Folders) object).getIcon());
+            }
+            else
+            {
+                textView.setText(((Files) object).getName());
+                imageView.setImageResource(((Files) object).getIcon());
+            }
+
         }
 
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition() - 1;
-            DrawerItem drawerItem = drawerItemList.get(position);
-            if(drawerItem.hasSubItems()) {
-                if (!drawerItem.isExpanded()) {
-                    openFolder(drawerItem, position);
-                } else {
-                    closeFolder(drawerItem, position);
-                }
-            }
-            else
+            if(drawerItemList.get(position).getClass() == Folders.class)
             {
-                listener.onItemClicked(drawerItem);
+                Folders folders = (Folders) drawerItemList.get(position);
+                if(folders.hasSubItems()) {
+                    if (!folders.isExpanded()) {
+                        openFolder(folders, position);
+                    } else {
+                        closeFolder(folders, position);
+                    }
+                }
+                else
+                {
+                    listener.onItemClicked(folders);
+                }
             }
         }
     }
 
 
-    private void openFolder(DrawerItem drawerItem, int position)
+    private void openFolder(Folders folders, int position)
     {
-        drawerItem.setExpanded(true);
-        List<SubItems> subItems = drawerItem.getSubItems();
-        List<DrawerItem> subFolders = drawerItem.getSubFolders();
+        folders.setExpanded(true);
+        List<Files> subItems = folders.getSubItems();
+        List<Folders> subFolders = folders.getSubFolders();
         int insertPosition = position + 1;
-        for (DrawerItem subFolder : subFolders) {
+        paddingFolders = folders.getPadding() + 50;
+        for (Folders subFolder : subFolders) {
+            subFolder.setPadding(paddingFolders);
             subFolder.setExpanded(false);
             drawerItemList.add(insertPosition++, subFolder);
         }
-        for (SubItems subItem : subItems) {
-            drawerItemList.add(insertPosition++, new DrawerItem(subItem));
+        for (Files subItem : subItems) {
+            subItem.setPadding(paddingFolders);
+            drawerItemList.add(insertPosition++, subItem);
         }
         notifyItemRangeInserted(position + 2, subItems.size() + subFolders.size());
     }
 
-    private void closeFolder(DrawerItem drawerItem, int position)
-    {
-        List<SubItems> subItems = drawerItem.getSubItems();
-        List<DrawerItem> subFolders = drawerItem.getSubFolders();
+    private void closeFolder(Folders folders, int position) {
+        List<Files> subItems = folders.getSubItems();
+        List<Folders> subFolders = folders.getSubFolders();
         int insertPosition = position + 1;
-        for (DrawerItem subFolder : subFolders) {
-            if(subFolder.isExpanded())
-            {
+        paddingFolders = folders.getPadding() - 50;
+        for (Folders subFolder : subFolders) {
+            if (subFolder.isExpanded()) {
                 closeFolder(subFolder, insertPosition);
             }
             drawerItemList.remove(insertPosition);
 
         }
-        for (SubItems ignored : subItems) {
+        for (Files ignored : subItems) {
             drawerItemList.remove(insertPosition);
         }
-        drawerItem.setExpanded(false);
+        folders.setExpanded(false);
         notifyItemRangeRemoved(position + 2, subItems.size() + subFolders.size());
     }
 

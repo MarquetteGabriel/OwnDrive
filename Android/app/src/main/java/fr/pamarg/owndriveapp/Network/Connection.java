@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import fr.pamarg.owndriveapp.MainActivityViewModel;
+import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
 
 public class Connection
 {

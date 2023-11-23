@@ -1,0 +1,45 @@
+{
+  "file_manager": {
+    "root_directory": "/home/user/documents",
+    "current_directory": "/home/user/documents/work",
+    "files": [
+      {
+        "name": "file1.txt",
+        "type": "text",
+        "size": "1024 KB",
+        "created_at": "2023-01-01T12:00:00Z",
+        "modified_at": "2023-01-05T14:30:00Z"
+      },
+      {
+        "name": "file2.jpg",
+        "type": "image",
+        "size": "2048 KB",
+        "created_at": "2023-02-10T09:45:00Z",
+        "modified_at": "2023-02-12T11:20:00Z"
+      },
+      {
+        "name": "folder1",
+        "type": "directory",
+        "size": "N/A",
+        "created_at": "2023-03-20T15:10:00Z",
+        "modified_at": "2023-03-20T15:10:00Z",
+        "contents": [
+          {
+            "name": "subfile1.txt",
+            "type": "text",
+            "size": "512 KB",
+            "created_at": "2023-03-20T15:15:00Z",
+            "modified_at": "2023-03-20T15:45:00Z"
+          },
+          {
+            "name": "subfile2.txt",
+            "type": "text",
+            "size": "768 KB",
+            "created_at": "2023-03-20T15:20:00Z",
+            "modified_at": "2023-03-20T15:50:00Z"
+          }
+        ]
+      }
+    ]
+  }
+}

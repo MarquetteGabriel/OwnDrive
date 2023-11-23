@@ -1,12 +1,15 @@
-package fr.pamarg.owndriveapp;
+package fr.pamarg.owndriveapp.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import fr.pamarg.owndriveapp.model.directoryfiles.Folders;
+
 public class MainActivityViewModel extends ViewModel {
 
     private final MutableLiveData<String> ipAddress = new MutableLiveData<>();
+    private MutableLiveData<Folders> treeFolders = new MutableLiveData<>();
 
     public LiveData<String> getIpAddress() {
         return ipAddress;
@@ -25,5 +28,16 @@ public class MainActivityViewModel extends ViewModel {
     public void setState(Boolean state) {
         this.state.postValue(state);
     }
+
+    public void setTreeFolders(Folders folders)
+    {
+        this.treeFolders.setValue(folders);
+    }
+
+    public LiveData<Folders> getTreeFolders()
+    {
+        return this.treeFolders;
+    }
+
 
 }

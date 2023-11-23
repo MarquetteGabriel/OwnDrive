@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import fr.pamarg.owndriveapp.MainActivityViewModel;
+import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
 
 public class ConnectionTest
 {

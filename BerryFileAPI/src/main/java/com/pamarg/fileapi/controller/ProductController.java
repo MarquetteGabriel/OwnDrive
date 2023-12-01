@@ -1,5 +1,6 @@
 package com.pamarg.fileapi.controller;
 
+import com.pamarg.fileapi.model.Product;
 import com.pamarg.fileapi.service.ProductService;
 import com.pamarg.fileapi.service.ResponseClass;
 import org.springframework.beans.factory.annotation.Autowired;

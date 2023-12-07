@@ -1,10 +1,8 @@
-package fr.pamarg.owndriveapp.model;
+package fr.pamarg.owndriveapp.model.treeManager;
 
 import static org.junit.Assert.assertEquals;
 
 import android.os.Environment;
-
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -83,7 +81,7 @@ public class JsonManagerTest {
 
     @Test
     public void readDatasTest() throws IOException {
-        JsonManager.readDatas(InstrumentationRegistry.getInstrumentation().getContext(), mainActivityViewModel);
+        JsonManager.getTreeFiles(mainActivityViewModel, "");
         assertEquals(content, mainActivityViewModel.getTreeFolders());
     }
 

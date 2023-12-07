@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.io.File;
 
 import fr.pamarg.owndriveapp.R;
-import fr.pamarg.owndriveapp.model.JsonManager;
+import fr.pamarg.owndriveapp.model.treeManager.JsonManager;
 import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
 
 public class FilesFragment extends Fragment

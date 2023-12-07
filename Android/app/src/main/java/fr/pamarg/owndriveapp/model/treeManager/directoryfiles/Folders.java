@@ -1,4 +1,4 @@
-package fr.pamarg.owndriveapp.model.directoryfiles;
+package fr.pamarg.owndriveapp.model.treeManager.directoryfiles;
 
 import java.util.ArrayList;
 import java.util.List;

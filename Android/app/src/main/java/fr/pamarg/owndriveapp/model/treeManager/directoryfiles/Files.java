@@ -1,4 +1,4 @@
-package fr.pamarg.owndriveapp.model.directoryfiles;
+package fr.pamarg.owndriveapp.model.treeManager.directoryfiles;
 
 public class Files {
     private final String name;

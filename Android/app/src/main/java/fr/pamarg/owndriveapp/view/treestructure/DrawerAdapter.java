@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import fr.pamarg.owndriveapp.R;
-import fr.pamarg.owndriveapp.model.directoryfiles.Files;
-import fr.pamarg.owndriveapp.model.directoryfiles.Folders;
+import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Files;
+import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Folders;
 
 public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {

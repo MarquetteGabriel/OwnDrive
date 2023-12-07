@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import fr.pamarg.owndriveapp.model.directoryfiles.Folders;
+import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Folders;
 
 public class MainActivityViewModel extends ViewModel {
 

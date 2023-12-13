@@ -1,9 +1,8 @@
 package com.pamarg.fileapi;
 
-import com.pamarg.fileapi.model.Product;
-import com.pamarg.fileapi.repo.ProductRepo;
-import com.pamarg.fileapi.service.ProductService;
-import org.junit.jupiter.api.Assertions;
+import com.pamarg.fileapi.model.Document;
+import com.pamarg.fileapi.repo.DocumentRepo;
+import com.pamarg.fileapi.service.DocumentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,14 +14,14 @@ import java.util.List;
 @SpringBootTest
 class UploadingApplicationTests {
     @Autowired
-    private ProductRepo productRepo;
+    private DocumentRepo documentRepo;
     @Autowired
-    private ProductService productService;
+    private DocumentService documentService;
 
 
     @BeforeEach
     public void setUp() {
-        productRepo.deleteAll();
+        documentRepo.deleteAll();
     }
 
     // @Test
@@ -32,10 +31,10 @@ class UploadingApplicationTests {
     public void testSaveAttachment() throws Exception {
         MockMultipartFile mockFile = new MockMultipartFile(
                 "file", "test.txt", "text/plain", "Hello, world!".getBytes());
-        Product product = productService.saveAttachment(mockFile);
-        assertNotNull(product.getId());
-        assertEquals("test.txt", product.getFileName());
-        assertEquals("text/plain", product.getFileType());
+        Document document = documentService.saveAttachment(mockFile);
+        assertNotNull(document.getId());
+        assertEquals("test.txt", document.getFileName());
+        assertEquals("text/plain", document.getFileType());
     }
 
     @Test
@@ -44,22 +43,22 @@ class UploadingApplicationTests {
                 "file", "test1.pdf", "text/plain", "Hello, world!".getBytes());
         MockMultipartFile mockFile2 = new MockMultipartFile(
                 "file", "test2.txt", "text/plain", "Goodbye, world!".getBytes());
-        productService.saveFiles(new MockMultipartFile[]{mockFile1, mockFile2});
-        List<Product> products = productService.getAllFiles();
+        documentService.saveFiles(new MockMultipartFile[]{mockFile1, mockFile2});
+        List<Document> documents = documentService.getAllFiles();
         System.out.println("Saved files:");
-        for (Product product : products) {
-            System.out.println(product.getFileName());
+        for (Document document : documents) {
+            System.out.println(document.getFileName());
         }
-        assertEquals(2, products.size());
-        assertEquals("test1.pdf", products.get(0).getFileName());
-        assertEquals("test2.txt", products.get(1).getFileName());
+        assertEquals(2, documents.size());
+        assertEquals("test1.pdf", documents.get(0).getFileName());
+        assertEquals("test2.txt", documents.get(1).getFileName());
     }
 
     @Test
     public void testSaveAttachmentInvalidName() {
         MockMultipartFile mockFile = new MockMultipartFile(
                 "file", "../test.txt", "text/plain", "Hello, world!".getBytes());
-        assertThrows(Exception.class, () -> productService.saveAttachment(mockFile));
+        assertThrows(Exception.class, () -> documentService.saveAttachment(mockFile));
     }
 
     @Test
@@ -67,6 +66,6 @@ class UploadingApplicationTests {
         byte[] bytes = new byte[1024 * 1024 * 10];
         MockMultipartFile mockFile = new MockMultipartFile(
                 "file", "test.txt", "text/plain", bytes);
-        assertThrows(Exception.class, () -> productService.saveAttachment(mockFile));
+        assertThrows(Exception.class, () -> documentService.saveAttachment(mockFile));
     }
 }

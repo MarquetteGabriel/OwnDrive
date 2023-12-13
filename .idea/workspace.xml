@@ -4,14 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de49c715-4867-448b-b1b4-a99e0a280396" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/BerryFileAPI/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/BerryFileAPI/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BerryFileAPI/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BerryFileAPI/target/classes/application.properties" afterDir="false" />
+    <list default="true" id="de49c715-4867-448b-b1b4-a99e0a280396" name="Changes" comment="Bug corrections">
+      <change afterPath="$PROJECT_DIR$/svelteApp/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/svelteApp/src/routes/FileList.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/src/main/java/com/pamarg/fileapi/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BerryFileAPI/src/main/java/com/pamarg/fileapi/controller/DocumentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/src/main/java/com/pamarg/fileapi/model/Product.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/src/main/java/com/pamarg/fileapi/repo/ProductRepo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/src/main/java/com/pamarg/fileapi/service/ProductService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/src/main/java/com/pamarg/fileapi/service/ProductServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/src/test/java/com/pamarg/fileapi/UploadingApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/BerryFileAPI/src/test/java/com/pamarg/fileapi/UploadingApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/target/classes/com/pamarg/fileapi/controller/ProductController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/target/classes/com/pamarg/fileapi/model/Product$ProductBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/target/classes/com/pamarg/fileapi/model/Product.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/target/classes/com/pamarg/fileapi/repo/ProductRepo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/target/classes/com/pamarg/fileapi/service/ProductService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BerryFileAPI/target/classes/com/pamarg/fileapi/service/ProductServiceImpl.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FileList" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -20,22 +40,34 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2YvuroapAbW28zQYgr2CMMcrIxM" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "configurable.group.editor",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Antoine\Documents\ESEO\Semestre9\Projet_de_Fin_d_Etudes\Git\OwnDrive\svelteApp\src" />
+      <recent name="C:\Users\Antoine\Documents\ESEO\Semestre9\Projet_de_Fin_d_Etudes\Git\OwnDrive\svelteApp\src\routes" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="OwnDrive" />
@@ -61,10 +93,20 @@
       <updated>1701418576086</updated>
       <workItem from="1701418582811" duration="124000" />
       <workItem from="1701418942653" duration="1832000" />
+      <workItem from="1702023455684" duration="1936000" />
+      <workItem from="1702026544944" duration="859000" />
+      <workItem from="1702027430349" duration="5226000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

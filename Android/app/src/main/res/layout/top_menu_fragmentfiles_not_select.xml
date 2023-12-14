@@ -38,6 +38,7 @@
             </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/add_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -53,6 +54,7 @@
 
 
         <LinearLayout
+            android:id="@+id/add_people"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -68,6 +70,7 @@
 
 
         <LinearLayout
+            android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -82,6 +85,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"            
             android:gravity="center"

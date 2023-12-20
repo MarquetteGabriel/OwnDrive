@@ -5,11 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Scanner;
 
-import javax.net.ssl.HttpsURLConnection;
-
+import fr.pamarg.owndriveapp.Network.CallAPIManager;
 import fr.pamarg.owndriveapp.R;
 import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Files;
 import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Folders;
@@ -18,36 +15,14 @@ import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
 public class JsonManager
 {
 
-    private static final String urlLink_AllFiles = "/api/all";
-
-    public static void getTreeFiles(MainActivityViewModel mainActivityViewModel, String ip)
-    {
-        try
-        {
-            JSONObject jsonObject = readDatas(ip);
+    public static void getTreeFiles(MainActivityViewModel mainActivityViewModel, String ip) {
+        try {
+            JSONObject jsonObject = CallAPIManager.readDatas(ip);
             jsonAnalyser(mainActivityViewModel, jsonObject);
-        }
-        catch (JSONException | IOException e)
-        {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }
-
-    private static JSONObject readDatas(String ip) throws JSONException, IOException
-    {
-        URL url = new URL("https://" + ip + urlLink_AllFiles);
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.connect();
-        StringBuilder inline = new StringBuilder();
-        Scanner scanner = new Scanner(url.openStream());
-        while (scanner.hasNext()) {
-            inline.append(scanner.nextLine());
-        }
-        scanner.close();
-        return new JSONObject(inline.toString());
-    }
-
 
     private static void jsonAnalyser(MainActivityViewModel mainActivityViewModel, JSONObject file) throws JSONException
     {

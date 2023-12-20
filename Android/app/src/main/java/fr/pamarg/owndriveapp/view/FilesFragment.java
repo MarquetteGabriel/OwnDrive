@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.pamarg.owndriveapp.Network.CallAPIManager;
 import fr.pamarg.owndriveapp.R;
 import fr.pamarg.owndriveapp.model.treeManager.JsonManager;
 import fr.pamarg.owndriveapp.view.gridview.GridViewAdapter;
@@ -55,8 +56,9 @@ public class FilesFragment extends Fragment
         gridView = view.findViewById(R.id.grid_view);
 
         List<String> filesNameList = new ArrayList<>();
+        String[] filesOfCurrentPage = CallAPIManager.getFilesOfCurrentPage(mainActivityViewModel.getIpAddress().getValue());
 
-        for (String fileName : textAnswer)
+        for (String fileName : filesOfCurrentPage)
         {
             filesNameList.add(cropTextLength(fileName));
         }

@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -29,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.pamarg.owndriveapp.databinding.ActivityMainBinding;
 import fr.pamarg.owndriveapp.model.treeManager.JsonManager;
 import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Folders;
 import fr.pamarg.owndriveapp.view.treestructure.DrawerAdapter;
@@ -47,9 +49,11 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        //setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        binding.setViewModel(this.mainActivityViewModel);
+        binding.setLifecycleOwner(this);
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {

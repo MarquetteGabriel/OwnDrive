@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_fragment"
-    app:startDestination="@id/filesFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/filesFragment"
@@ -29,5 +29,14 @@
             app:exitAnim="@anim/to_right"
             app:popEnterAnim="@anim/from_right"
             app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="fr.pamarg.owndriveapp.view.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_filesFragment"
+            app:destination="@id/filesFragment" />
     </fragment>
 </navigation>

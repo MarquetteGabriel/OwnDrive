@@ -39,5 +39,13 @@ public class MainActivityViewModel extends ViewModel {
         return this.treeFolders;
     }
 
+    private final MutableLiveData<Boolean> onApp = new MutableLiveData<>();
 
+    public MutableLiveData<Boolean> getOnApp() {
+        return onApp;
+    }
+
+    public void setOnApp(Boolean onApp) {
+        this.onApp.postValue(onApp);
+    }
 }

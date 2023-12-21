@@ -4,9 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
-import fr.pamarg.owndriveapp.Network.CallAPIManager;
 import fr.pamarg.owndriveapp.R;
 import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Files;
 import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Folders;
@@ -16,12 +13,8 @@ public class JsonManager
 {
 
     public static void getTreeFiles(MainActivityViewModel mainActivityViewModel, String ip) {
-        try {
-            JSONObject jsonObject = CallAPIManager.readDatas(ip);
-            jsonAnalyser(mainActivityViewModel, jsonObject);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+        // JSONObject jsonObject = CallAPIManager.readDatas(ip);
+        //   jsonAnalyser(mainActivityViewModel, jsonObject);
     }
 
     private static void jsonAnalyser(MainActivityViewModel mainActivityViewModel, JSONObject file) throws JSONException

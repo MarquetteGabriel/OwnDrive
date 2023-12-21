@@ -32,11 +32,6 @@ public class CallAPIManager
 
     public static String[] getFilesOfCurrentPage(String ip)
     {
-        try {
-            JSONObject jsonObject = readDatas(ip);
-        } catch (JSONException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
+        return new String[]{"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
     }
 }

@@ -39,5 +39,13 @@ public class MainActivityViewModel extends ViewModel {
         return this.treeFolders;
     }
 
+    private MutableLiveData<Boolean> isLongClicked = new MutableLiveData<>();
 
+    public MutableLiveData<Boolean> getIsLongClicked() {
+        return isLongClicked;
+    }
+
+    public void setIsLongClicked(MutableLiveData<Boolean> isLongClicked) {
+        this.isLongClicked = isLongClicked;
+    }
 }

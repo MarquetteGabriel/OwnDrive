@@ -1,5 +1,7 @@
 package fr.pamarg.owndriveapp.view;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,10 +99,36 @@ public class FilesFragment extends Fragment
         });
 
         gridView.setOnItemClickListener(this::gridViewonClick);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
     }
 
     private void gridViewonClick(AdapterView<?> adapterView, View view12, int position, long l) {
         Toast.makeText(requireContext().getApplicationContext(), textAnswer[position], Toast.LENGTH_SHORT).show();
+        if(!textAnswer[position].contains(".")) {
+            //TODO : request to api new folder and substitute
+        }
+        else
+        {
+            //TODO : open file
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse("file://tmps + "), "text/plain");
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            try{
+                startActivity(intent);
+            }
+              catch (Exception e)
+              {
+
+              }
+        }
     }
 
     private String cropTextLength(String text)

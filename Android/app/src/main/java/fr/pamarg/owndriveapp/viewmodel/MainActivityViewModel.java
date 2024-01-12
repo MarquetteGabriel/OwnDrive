@@ -1,5 +1,7 @@
 package fr.pamarg.owndriveapp.viewmodel;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -39,13 +41,23 @@ public class MainActivityViewModel extends ViewModel {
         return this.treeFolders;
     }
 
-    private MutableLiveData<Boolean> isLongClicked = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLongClicked = new MutableLiveData<>(false);
 
     public MutableLiveData<Boolean> getIsLongClicked() {
-        return isLongClicked;
+        return this.isLongClicked;
     }
 
-    public void setIsLongClicked(MutableLiveData<Boolean> isLongClicked) {
-        this.isLongClicked = isLongClicked;
+    public void setIsLongClicked(Boolean isLongClicked) {
+        this.isLongClicked.postValue(isLongClicked);
+    }
+
+
+    public class FilesVisibilityMainActivity extends BaseObservable
+    {
+        @Bindable
+        public int getVisibility()
+        {
+            return Boolean.TRUE.equals(isLongClicked.getValue()) ? 0 : 1;
+        }
     }
 }

@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -29,6 +32,7 @@ public class FilesFragment extends Fragment
 {
 
     GridViewAdapter gridViewAdapter;
+    ViewDataBinding binding;
     GridView gridView;
 
     String[] textAnswer = {"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
@@ -46,8 +50,13 @@ public class FilesFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_files, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_files, container, false);
+        //View view = inflater.inflate(R.layout.fragment_files, container, false);
+        binding.setLifecycleOwner(this);
+        View view = binding.getRoot();
         mainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
+
+        mainActivityViewModel.setIsLongClicked(false);
         return view;
     }
 
@@ -98,17 +107,26 @@ public class FilesFragment extends Fragment
             // TODO: more
         });
 
-        gridView.setOnItemClickListener(this::gridViewonClick);
+        gridView.setOnItemClickListener(this::gridViewOnClick);
+        gridView.setOnItemLongClickListener(this::gridViewOnLongClick);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        gridView.setOnItemClickListener((adapterView, view12, i, l) -> {
 
-            }
         });
+
+        binding.executePendingBindings();
     }
 
-    private void gridViewonClick(AdapterView<?> adapterView, View view12, int position, long l) {
+    private boolean gridViewOnLongClick(AdapterView<?> adapterView, View view, int position, long l)
+    {
+        Toast.makeText(requireContext().getApplicationContext(), textAnswer[position], Toast.LENGTH_SHORT).show();
+        CheckBox checkBox = view.findViewById(R.id.checkbox);
+        mainActivityViewModel.setIsLongClicked(true);
+        checkBox.setChecked(true);
+        return true;
+    }
+
+    private void gridViewOnClick(AdapterView<?> adapterView, View view12, int position, long l) {
         Toast.makeText(requireContext().getApplicationContext(), textAnswer[position], Toast.LENGTH_SHORT).show();
         if(!textAnswer[position].contains(".")) {
             //TODO : request to api new folder and substitute

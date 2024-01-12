@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.pamarg.owndriveapp.model.treeManager.JsonManager;
 import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Folders;
 import fr.pamarg.owndriveapp.view.treestructure.DrawerAdapter;
 import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
                     {
                         drawerLayout.closeDrawer(GravityCompat.START);
                     }
-                    navController.navigate(R.id.action_profileFragment_to_filesFragment);
+                    navController.navigate(R.id.filesFragment);
                 }
                 else
                 {
@@ -160,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
             SharedPreferences sharedPreferences = getSharedPreferences("OwnDrive", MODE_PRIVATE);
             String ip = sharedPreferences.getString("ip", "");
 
-            JsonManager.getTreeFiles(mainActivityViewModel, ip);
+            //JsonManager.getTreeFiles(mainActivityViewModel, ip);
             addItems();
             drawerAdapter.notifyDataSetChanged();
 
@@ -202,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
                 {
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }
-                navController.navigate(R.id.action_filesFragment_to_profileFragment);
+                navController.navigate(R.id.profileFragment);
             }
             else
             {
@@ -254,8 +253,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
                     imageViewFiles.setImageResource(R.drawable.button_folder);
                     imageViewHome.setImageResource(R.drawable.button_home);
 
-
-
                     linearLayoutProfile.setBackgroundResource(R.drawable.round_background);
                     imageViewProfile.setImageResource(R.drawable.button_profile_on);
                     textViewProfile.setVisibility(View.VISIBLE);
@@ -268,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
             }
         });
     }
-
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {

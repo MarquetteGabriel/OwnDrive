@@ -36,7 +36,6 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login, container, false);
         mainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
-        mainActivityViewModel.setOnApp(false);
 
         Button loginButton = view.findViewById(R.id.loginButton);
         EditText ipAddressEditText = view.findViewById(R.id.loginEditText);
@@ -46,7 +45,6 @@ public class LoginFragment extends Fragment {
             if(!ip.isEmpty() && validIp(ip))
             {
                 mainActivityViewModel.setIpAddress(ip);
-                mainActivityViewModel.setOnApp(true);
                 SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("OwnDriveApp", Context.MODE_PRIVATE);
                 sharedPreferences.getString("ip", ip);
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_filesFragment);

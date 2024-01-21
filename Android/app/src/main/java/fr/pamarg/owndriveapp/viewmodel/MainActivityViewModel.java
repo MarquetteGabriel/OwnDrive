@@ -40,20 +40,11 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     private MutableLiveData<Boolean> isLongClicked = new MutableLiveData<>(false);
-    private final MutableLiveData<Boolean> onApp = new MutableLiveData<>();
-
     public MutableLiveData<Boolean> getIsLongClicked() {
         return this.isLongClicked;
     }
 
     public void setIsLongClicked(Boolean isLongClicked) {
         this.isLongClicked.setValue(isLongClicked);
-    }
-    public MutableLiveData<Boolean> getOnApp() {
-        return onApp;
-    }
-
-    public void setOnApp(Boolean onApp) {
-        this.onApp.postValue(onApp);
     }
 }

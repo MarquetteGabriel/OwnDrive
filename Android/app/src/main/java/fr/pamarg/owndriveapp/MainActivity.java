@@ -1,5 +1,6 @@
 package fr.pamarg.owndriveapp;
 
+import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.pamarg.owndriveapp.databinding.ActivityMainBinding;
 import fr.pamarg.owndriveapp.model.treeManager.JsonManager;
 import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Folders;
 import fr.pamarg.owndriveapp.view.treestructure.DrawerAdapter;
@@ -49,17 +48,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-        binding.setViewModel(this.mainActivityViewModel);
-        binding.setLifecycleOwner(this);
 
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Request Permissions
             ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
             return;
         }
@@ -75,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
         final TextView textViewFiles = findViewById(R.id.textViewFiles);
         final TextView textViewHome = findViewById(R.id.textViewHome);
         final TextView textViewProfile = findViewById(R.id.textViewProfile);
+
+        View bottom_navigation_bar = findViewById(R.id.include);
 
         RecyclerView recyclerView = findViewById(R.id.drawer_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -184,19 +182,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
             scaleAnimation.setFillAfter(true);
             linearLayoutFiles.startAnimation(scaleAnimation);
             drawerLayout.openDrawer(GravityCompat.START);
-            /*
-            if(selectTab == 2)
-            {
-                navController.navigate(R.id.action_filesFragment_to_treeFragment);
-            }
-            else if (selectTab == 3)
-            {
-                navController.navigate(R.id.action_profileFragment_to_treeFragment);
-            }
-            else
-            {
-                navController.navigate(R.id.treeFragment);
-            }*/
         });
 
         linearLayoutProfile.setOnClickListener(view -> {
@@ -269,6 +254,15 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
                     scaleAnimation.setFillAfter(true);
                     linearLayoutProfile.startAnimation(scaleAnimation);
                 }
+            }
+
+            if(currentId != R.id.loginFragment)
+            {
+                bottom_navigation_bar.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                bottom_navigation_bar.setVisibility(View.GONE);
             }
         });
     }

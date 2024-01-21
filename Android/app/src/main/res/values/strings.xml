@@ -5,4 +5,11 @@
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
     <string name="picture_of_file_folder">Picture of file/folder</string>
+    <string name="profile">Profile</string>
+    <string name="activer_mode_developpeur">Activer mode developpeur</string>
+    <string name="ip">IP :</string>
+    <string name="cpu">CPU : </string>
+    <string name="ram">RAM : </string>
+    <string name="percent">%</string>
+    <string name="images_docker">Images Docker :</string>
 </resources>

@@ -1,20 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/purple_200"
-    tools:context=".view.ProfileFragment">
+    android:background="@color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="viewModel"
+            type="fr.pamarg.owndriveapp.viewmodel.ProfileViewModel" />
+    </data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.ProfileFragment">
+
+        <!-- Title -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/profileTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/profile"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Non developer mode -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+            <!-- IP -->
+
+            <TextView
+                android:id="@+id/ipTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="50dp"
+                android:text="@string/ip"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="50dp"
+                android:text="@{viewModel.getIp()}"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/ipTextView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- CPU -->
+
+            <TextView
+                android:id="@+id/cpuTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/cpu"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ipTextView" />
+
+            <TextView
+                android:id="@+id/cpuTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/cpu"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cpuTitle" />
+
+            <TextView
+                android:id="@+id/cpuValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@{viewModel.getCpu()}"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/cpuTextView"
+                app:layout_constraintTop_toBottomOf="@+id/cpuTitle" />
+
+            <TextView
+                android:id="@+id/cpuPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/percent"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/cpuValue"
+                app:layout_constraintTop_toBottomOf="@+id/cpuTitle" />
+
+            <!-- RAM -->
+
+            <TextView
+                android:id="@+id/ramTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/ram"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cpuTextView" />
+
+            <TextView
+                android:id="@+id/ramTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/ram"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ramTitle" />
+
+            <TextView
+                android:id="@+id/ramValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{viewModel.getRAM()}"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/ramTextView"
+                app:layout_constraintTop_toBottomOf="@+id/ramTitle" />
+
+            <TextView
+                android:id="@+id/ramPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/percent"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/ramValue"
+                app:layout_constraintTop_toBottomOf="@+id/ramTitle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Switch -->
+
+        <Switch
+            android:id="@+id/modeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:minHeight="48dp"
+            android:text="@string/activer_mode_developpeur"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <!-- Developer mode -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/modeSwitch">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:text="@string/images_docker"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

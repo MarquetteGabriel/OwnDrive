@@ -23,9 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.pamarg.owndriveapp.Network.CallAPIManager;
 import fr.pamarg.owndriveapp.R;
-import fr.pamarg.owndriveapp.model.treeManager.JsonManager;
 import fr.pamarg.owndriveapp.view.gridview.GridViewAdapter;
 import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
 
@@ -69,8 +67,8 @@ public class FilesFragment extends Fragment
         gridView = view.findViewById(R.id.grid_view);
 
         List<String> filesNameList = new ArrayList<>();
-        String[] filesOfCurrentPage = CallAPIManager.getFilesOfCurrentPage(mainActivityViewModel.getIpAddress().getValue());
-
+        //String[] filesOfCurrentPage = CallAPIManager.getFilesOfCurrentPage(mainActivityViewModel.getIpAddress().getValue());
+        String[] filesOfCurrentPage = {"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
         for (String fileName : filesOfCurrentPage)
         {
             filesNameList.add(cropTextLength(fileName));
@@ -97,7 +95,7 @@ public class FilesFragment extends Fragment
 
         layoutAddFolder.setOnClickListener(view1 -> {
             // TODO: add folder
-            JsonManager.getTreeFiles(mainActivityViewModel, mainActivityViewModel.getIpAddress().getValue());
+            //JsonManager.getTreeFiles(mainActivityViewModel, mainActivityViewModel.getIpAddress().getValue());
         });
 
         layoutAddFile.setOnClickListener(view1 -> {

@@ -62,17 +62,19 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         {
             Object object = drawerItemList.get(position - 1);
             int padding;
-            if(object.getClass() == Folders.class)
-            {
-                padding = ((Folders) object).getPadding();
+            if(object != null){
+                if(object.getClass() == Folders.class)
+                {
+                    padding = ((Folders) object).getPadding();
+                }
+                else
+                {
+                    padding = ((Files) object).getPadding();
+                }
+                ((ItemViewHolder) holder).bind(drawerItemList.get(position - 1));
+                ((ItemViewHolder) holder).imageView.setPadding(padding,0,0,0);
+                ((ItemViewHolder) holder).textView.setPadding(10, 0, 0, 0);
             }
-            else
-            {
-                padding = ((Files) object).getPadding();
-            }
-            ((ItemViewHolder) holder).bind(drawerItemList.get(position - 1));
-            ((ItemViewHolder) holder).imageView.setPadding(padding,0,0,0);
-            ((ItemViewHolder) holder).textView.setPadding(10, 0, 0, 0);
         }
     }
 

@@ -1,5 +1,7 @@
 package fr.pamarg.owndriveapp.view;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,10 +43,12 @@ public class LoginFragment extends Fragment {
 
         loginButton.setOnClickListener(v -> {
             String ip = ipAddressEditText.getText().toString();
-            if(!ip.isEmpty())
+            if(!ip.isEmpty() && validIp(ip))
             {
                 mainActivityViewModel.setIpAddress(ip);
                 mainActivityViewModel.setOnApp(true);
+                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("OwnDriveApp", Context.MODE_PRIVATE);
+                sharedPreferences.getString("ip", ip);
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_filesFragment);
             }
             else
@@ -54,5 +58,31 @@ public class LoginFragment extends Fragment {
 
         });
         return view;
+    }
+
+
+    private boolean validIp(String ip)
+    {
+        String[] ipSplit = ip.split("\\.");
+        if(ipSplit.length != 4)
+        {
+            return false;
+        }
+        for(String s : ipSplit)
+        {
+            try
+            {
+                int i = Integer.parseInt(s);
+                if(i < 0 || i > 255)
+                {
+                    return false;
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

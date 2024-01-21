@@ -66,7 +66,7 @@ public class CallAPIManager
 
     public static String[] getFilesOfCurrentPage(String ip)
     {
-        JSONObject jsonObject = readDatas(ip);
+        //JSONObject jsonObject = readDatas(ip);
         return new String[]{"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
     }
 }

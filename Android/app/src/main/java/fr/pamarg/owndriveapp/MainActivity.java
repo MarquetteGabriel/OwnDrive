@@ -306,6 +306,10 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
         {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
+        else if (currentId == R.id.filesFragment)
+        {
+            finish();
+        }
         else
         {
             super.onBackPressed();

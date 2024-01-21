@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import fr.pamarg.owndriveapp.Network.CallAPIManager;
 import fr.pamarg.owndriveapp.R;
@@ -16,12 +18,15 @@ public class JsonManager
 {
 
     public static void getTreeFiles(MainActivityViewModel mainActivityViewModel, String ip) {
-        try {
-            JSONObject jsonObject = CallAPIManager.readDatas(ip);
-            jsonAnalyser(mainActivityViewModel, jsonObject);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                JSONObject jsonObject = CallAPIManager.readDatas(ip);
+                jsonAnalyser(mainActivityViewModel, jsonObject);
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private static void jsonAnalyser(MainActivityViewModel mainActivityViewModel, JSONObject file) throws JSONException

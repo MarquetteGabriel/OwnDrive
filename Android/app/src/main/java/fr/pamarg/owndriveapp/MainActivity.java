@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
             selectTab = 1;
 
             SharedPreferences sharedPreferences = getSharedPreferences("OwnDrive", MODE_PRIVATE);
-            String ip = sharedPreferences.getString("ip", "");
+            String ip = sharedPreferences.getString("ip", "192.168.1.23");
 
             JsonManager.getTreeFiles(mainActivityViewModel, ip);
             addItems();
@@ -311,6 +311,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
     private void addItems()
     {
         drawerItemList.clear();
-        drawerItemList.add(mainActivityViewModel.getTreeFolders().getValue());
+        Folders treeFolders = mainActivityViewModel.getTreeFolders().getValue();
+        if(treeFolders != null)
+        {
+            drawerItemList.add(treeFolders);
+        }
+        else
+        {
+            drawerItemList.add(new Folders("home", true, R.drawable.button_folder));
+        }
     }
 }

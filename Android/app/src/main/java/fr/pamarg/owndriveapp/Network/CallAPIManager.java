@@ -4,20 +4,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
-import javax.net.ssl.HttpsURLConnection;
-
 public class CallAPIManager
 {
-    private static final String urlLink_AllFiles = "/api/all";
+    private static final String urlLink_AllFiles = "/api-files/all";
 
     // Get the list of all files and folders
     public static JSONObject readDatas(String ip) throws JSONException, IOException
     {
-        URL url = new URL("https://" + ip + urlLink_AllFiles);
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        URL url = new URL("http://" + ip + ":11900" + urlLink_AllFiles);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.connect();
         StringBuilder inline = new StringBuilder();
@@ -26,7 +25,9 @@ public class CallAPIManager
             inline.append(scanner.nextLine());
         }
         scanner.close();
-        return new JSONObject(inline.toString());
+        String modifiedString = inline.toString().substring(1, inline.toString().length() - 1);
+        return new JSONObject(modifiedString);
+        //return new JSONObject(inline.toString());
     }
 
 

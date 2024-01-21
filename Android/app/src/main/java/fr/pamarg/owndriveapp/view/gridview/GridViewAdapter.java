@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,6 +51,7 @@ public class GridViewAdapter extends BaseAdapter {
 
         ImageView fileIcon_ImageView = view.findViewById(R.id.imageFiles);
         TextView fileName_TextView = view.findViewById(R.id.textFiles);
+        CheckBox checkBox = view.findViewById(R.id.checkbox);
 
         fileIcon_ImageView.setImageResource(fileIcon[position]);
         fileName_TextView.setText(fileName[position]);

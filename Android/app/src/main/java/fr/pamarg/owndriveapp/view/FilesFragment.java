@@ -85,6 +85,13 @@ public class FilesFragment extends Fragment
         LinearLayout layoutAddPeople = view.findViewById(R.id.add_people);
         LinearLayout layoutSearch = view.findViewById(R.id.search);
         LinearLayout layoutMore = view.findViewById(R.id.more);
+        
+        for (int i = 0; i < gridView.getChildCount(); i++) {
+            View checkBoxView = gridView.getChildAt(i);
+            CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+            checkBox.setVisibility(View.INVISIBLE);
+        }
+
 
         layoutAddFolder.setOnClickListener(view1 -> {
             // TODO: add folder

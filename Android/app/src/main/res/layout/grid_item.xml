@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View"/>
         <variable
             name="viewmodel"
             type="fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel" />
@@ -76,7 +75,7 @@
                 android:layout_gravity="top"
                 android:background="@android:color/transparent"
                 android:checked="false"
-                android:visibility="@{viewmodel.isLongClicked ? View.VISIBLE : View.INVISIBLE}"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TouchTargetSizeCheck" />

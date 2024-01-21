@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
@@ -57,6 +58,7 @@ public class FilesFragment extends Fragment
         mainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
 
         mainActivityViewModel.setIsLongClicked(false);
+
         return view;
     }
 
@@ -80,17 +82,17 @@ public class FilesFragment extends Fragment
         gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), filesName, filesImages);
         gridView.setAdapter(gridViewAdapter);
 
-        LinearLayout layoutAddFolder = view.findViewById(R.id.add_folder);
-        LinearLayout layoutAddFile = view.findViewById(R.id.add_file);
-        LinearLayout layoutAddPeople = view.findViewById(R.id.add_people);
-        LinearLayout layoutSearch = view.findViewById(R.id.search);
-        LinearLayout layoutMore = view.findViewById(R.id.more);
-        
-        for (int i = 0; i < gridView.getChildCount(); i++) {
-            View checkBoxView = gridView.getChildAt(i);
-            CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
-            checkBox.setVisibility(View.INVISIBLE);
-        }
+        LinearLayout layoutAddFolder = view.findViewById(R.id.ns_add_folder);
+        LinearLayout layoutAddFile = view.findViewById(R.id.ns_add_file);
+        LinearLayout layoutAddPeople = view.findViewById(R.id.ns_add_people);
+        LinearLayout layoutSearch = view.findViewById(R.id.ns_search);
+        LinearLayout layoutMore = view.findViewById(R.id.ns_more);
+
+        LinearLayout layoutRename = view.findViewById(R.id.s_rename);
+        LinearLayout layoutMove = view.findViewById(R.id.s_move);
+        LinearLayout layoutShare = view.findViewById(R.id.s_share);
+        LinearLayout layoutDelete = view.findViewById(R.id.s_delete);
+        LinearLayout layoutClose = view.findViewById(R.id.s_close);
 
 
         layoutAddFolder.setOnClickListener(view1 -> {
@@ -114,6 +116,27 @@ public class FilesFragment extends Fragment
             // TODO: more
         });
 
+        layoutRename.setOnClickListener(view1 -> {
+
+                });
+
+        layoutMove.setOnClickListener(view1 -> {
+
+                });
+
+        layoutShare.setOnClickListener(view1 -> {
+
+                });
+
+        layoutDelete.setOnClickListener(view1 -> {
+
+                });
+
+        layoutClose.setOnClickListener(view1 -> {
+            uncheckedBoxes();
+            switchToLongClickState(false);
+                });
+
         gridView.setOnItemClickListener(this::gridViewOnClick);
         gridView.setOnItemLongClickListener(this::gridViewOnLongClick);
 
@@ -129,6 +152,7 @@ public class FilesFragment extends Fragment
         Toast.makeText(requireContext().getApplicationContext(), textAnswer[position], Toast.LENGTH_SHORT).show();
         CheckBox checkBox = view.findViewById(R.id.checkbox);
         mainActivityViewModel.setIsLongClicked(true);
+        switchToLongClickState(true);
         checkBox.setChecked(true);
         return true;
     }
@@ -199,5 +223,32 @@ public class FilesFragment extends Fragment
         return filesImages;
     }
 
+    private void switchToLongClickState(boolean state)
+    {
+        ConstraintLayout layoutNotSelected = requireView().findViewById(R.id.fileConstraintLayoutNotSelected);
+        ConstraintLayout layoutSelected = requireView().findViewById(R.id.fileConstraintLayoutSelected);
 
+        layoutNotSelected.setVisibility(state ? View.INVISIBLE : View.VISIBLE);
+        layoutSelected.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
+
+        configureBoxesVisibility(state);
+    }
+
+    private void configureBoxesVisibility(boolean state)
+    {
+        for (int i = 0; i < gridView.getChildCount(); i++) {
+            View checkBoxView = gridView.getChildAt(i);
+            CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+            checkBox.setVisibility(state ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    private void uncheckedBoxes()
+    {
+        for (int i = 0; i < gridView.getChildCount(); i++) {
+            View checkBoxView = gridView.getChildAt(i);
+            CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+            checkBox.setChecked(false);
+        }
+    }
 }

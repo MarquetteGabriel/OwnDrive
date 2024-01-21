@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fileConstraintLayoutNotSelected"
+    android:id="@+id/fileConstraintLayoutSelected"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/ns_add_folder"
+                android:id="@+id/s_rename"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -35,11 +35,11 @@
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/create_folder"/>
+                    android:src="@drawable/rename_button"/>
             </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ns_add_file"
+            android:id="@+id/s_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -50,12 +50,12 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/new_file"/>
+                android:src="@drawable/delete_button"/>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/ns_add_people"
+            android:id="@+id/s_move"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -66,12 +66,12 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/add_people"/>
+                android:src="@drawable/move_button"/>
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/ns_search"
+            android:id="@+id/s_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -82,11 +82,11 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/search"/>
+                android:src="@drawable/share_button"/>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ns_more"
+            android:id="@+id/s_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"            
             android:gravity="center"
@@ -97,7 +97,7 @@
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/more" />
+                android:src="@drawable/close_button" />
         </LinearLayout>
 
 

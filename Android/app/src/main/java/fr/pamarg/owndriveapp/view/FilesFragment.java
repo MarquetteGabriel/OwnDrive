@@ -1,11 +1,13 @@
 package fr.pamarg.owndriveapp.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -179,7 +181,29 @@ public class FilesFragment extends Fragment
         layoutRename.setOnClickListener(view1 -> {
             if(getNbSelected() == 1)
             {
-                // TODO : rename selected File
+                final Dialog dialog = new Dialog(requireContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.rename_dialog);
+
+                EditText renamEditText = dialog.findViewById(R.id.renamEditText);
+                ImageView validImageView = dialog.findViewById(R.id.validButton);
+
+                validImageView.setOnClickListener(view2 -> {
+
+                    String newFilename = renamEditText.getText().toString();
+                    // TODO : requete to rename file
+
+                    uncheckedBoxes();
+                    layoutCut.setVisibility(View.VISIBLE);
+                    layoutCopy.setVisibility(View.VISIBLE);
+                    layoutPaste.setVisibility(View.GONE);
+                    switchToLongClickState(false);
+
+                    dialog.dismiss();
+                });
+
+                dialog.show();
             }
 
         });
@@ -277,7 +301,7 @@ public class FilesFragment extends Fragment
         }
     }
 
-    private String cropTextLength(String text)
+    String cropTextLength(String text)
     {
         if (text.length() > 17)
         {

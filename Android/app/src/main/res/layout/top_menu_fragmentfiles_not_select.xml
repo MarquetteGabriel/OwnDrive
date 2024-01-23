@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/ns_top_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -51,6 +52,7 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/new_file"/>
+
         </LinearLayout>
 
 
@@ -71,7 +73,6 @@
 
 
         <LinearLayout
-            android:id="@+id/ns_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -79,10 +80,36 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp">
 
+            <EditText
+                android:id="@+id/ns_searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="2"
+                android:ems="10"
+                android:textColor="#272727"
+                android:hint="Search folders or files"
+                android:inputType="textPersonName"
+                android:visibility="gone" />
+
             <ImageView
+                android:id="@+id/ns_search"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/search"/>
+
+            <ImageView
+                android:id="@+id/ns_searching"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/ns_closeSearch"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/close_button"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout

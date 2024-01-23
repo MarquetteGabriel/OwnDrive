@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -33,6 +35,8 @@ public class FilesFragment extends Fragment
     GridViewAdapter gridViewAdapter;
     ViewDataBinding binding;
     GridView gridView;
+    String[] filesOfCurrentPage, filesName;
+    int[] filesImages;
 
     String[] textAnswer = {"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
 
@@ -68,22 +72,24 @@ public class FilesFragment extends Fragment
 
         List<String> filesNameList = new ArrayList<>();
         //String[] filesOfCurrentPage = CallAPIManager.getFilesOfCurrentPage(mainActivityViewModel.getIpAddress().getValue());
-        String[] filesOfCurrentPage = {"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
+        filesOfCurrentPage = new String[]{"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
         for (String fileName : filesOfCurrentPage)
         {
             filesNameList.add(cropTextLength(fileName));
         }
-        String[] filesName = new String[filesNameList.size()];
+        filesName = new String[filesNameList.size()];
         filesName = filesNameList.toArray(filesName);
 
-        int[] filesImages = setFilesImages(textAnswer);
+        filesImages = setFilesImages(textAnswer);
         gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), filesName, filesImages);
         gridView.setAdapter(gridViewAdapter);
+
+        LinearLayout layoutTop = view.findViewById(R.id.ns_top_menu);
 
         LinearLayout layoutAddFolder = view.findViewById(R.id.ns_add_folder);
         LinearLayout layoutAddFile = view.findViewById(R.id.ns_add_file);
         LinearLayout layoutAddPeople = view.findViewById(R.id.ns_add_people);
-        LinearLayout layoutSearch = view.findViewById(R.id.ns_search);
+
         LinearLayout layoutMore = view.findViewById(R.id.ns_more);
 
         LinearLayout layoutRename = view.findViewById(R.id.s_rename);
@@ -94,6 +100,11 @@ public class FilesFragment extends Fragment
         LinearLayout layoutCut = view.findViewById(R.id.s_cut);
         LinearLayout layoutCopy = view.findViewById(R.id.s_copy);
         LinearLayout layoutPaste = view.findViewById(R.id.s_paste);
+
+        ImageView imageSearch = view.findViewById(R.id.ns_search);
+        ImageView imageSearching = view.findViewById(R.id.ns_searching);
+        EditText editTextSearch = view.findViewById(R.id.ns_searchEditText);
+        ImageView imageCloseSearch = view.findViewById(R.id.ns_closeSearch);
 
 
         layoutAddFolder.setOnClickListener(view1 -> {
@@ -109,8 +120,56 @@ public class FilesFragment extends Fragment
             // TODO: add people
         });
 
-        layoutSearch.setOnClickListener(view1 -> {
+        imageSearch.setOnClickListener(view1 -> {
+            editTextSearch.setVisibility(View.VISIBLE);
+            imageCloseSearch.setVisibility(View.VISIBLE);
+            imageSearching.setVisibility(View.VISIBLE);
+            imageSearch.setVisibility(View.GONE);
+
+            layoutAddFile.setVisibility(View.GONE);
+            layoutAddFolder.setVisibility(View.GONE);
+            layoutAddPeople.setVisibility(View.GONE);
+            layoutMore.setVisibility(View.GONE);
+
+            layoutTop.setPadding(20,20,20,20);
+
+            imageSearching.setOnClickListener(view2 -> {
+                String searchedFiles = editTextSearch.getText().toString();
+                List<String> filesNamesFiltered = new ArrayList<>();
+
+                for(String file : filesOfCurrentPage)
+                {
+                    if(file.toLowerCase().contains(searchedFiles.toLowerCase())) {
+                        filesNamesFiltered.add(file);
+                    }
+                }
+                String fileNamesFiltered[] = new String[filesNamesFiltered.size()];
+                fileNamesFiltered = filesNamesFiltered.toArray(fileNamesFiltered);
+
+                int[] filesImagesFiltered = setFilesImages(fileNamesFiltered);
+                gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), fileNamesFiltered, filesImagesFiltered);
+                gridView.setAdapter(gridViewAdapter);
+            });
+
             // TODO: search
+        });
+
+        imageCloseSearch.setOnClickListener(view1 -> {
+            editTextSearch.setVisibility(View.GONE);
+            imageCloseSearch.setVisibility(View.GONE);
+            imageSearching.setVisibility(View.GONE);
+            imageSearch.setVisibility(View.VISIBLE);
+
+            layoutAddFile.setVisibility(View.VISIBLE);
+            layoutAddFolder.setVisibility(View.VISIBLE);
+            layoutAddPeople.setVisibility(View.VISIBLE);
+            layoutMore.setVisibility(View.VISIBLE);
+
+            layoutTop.setPadding(20,40,20,40);
+            editTextSearch.setText("");
+
+            gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), filesName, filesImages);
+            gridView.setAdapter(gridViewAdapter);
         });
 
         layoutMore.setOnClickListener(view1 -> {
@@ -146,23 +205,35 @@ public class FilesFragment extends Fragment
         layoutCut.setOnClickListener(view1 -> {
             if (getNbSelected() > 0) {
                 // TODO : cut selected Files
+                layoutCut.setVisibility(View.GONE);
+                layoutCopy.setVisibility(View.GONE);
+                layoutPaste.setVisibility(View.VISIBLE);
             }
         });
 
         layoutCopy.setOnClickListener(view1 -> {
             if (getNbSelected() > 0) {
                 // TODO : copy selected Files
+                layoutCut.setVisibility(View.GONE);
+                layoutCopy.setVisibility(View.GONE);
+                layoutPaste.setVisibility(View.VISIBLE);
             }
         });
 
         layoutPaste.setOnClickListener(view1 -> {
             if (getNbSelected() > 0 && Boolean.TRUE.equals(mainActivityViewModel.getIsCopy().getValue())) {
                 // TODO : paste selected Files
+                layoutCut.setVisibility(View.VISIBLE);
+                layoutCopy.setVisibility(View.VISIBLE);
+                layoutPaste.setVisibility(View.GONE);
             }
         });
 
         layoutClose.setOnClickListener(view1 -> {
             uncheckedBoxes();
+            layoutCut.setVisibility(View.VISIBLE);
+            layoutCopy.setVisibility(View.VISIBLE);
+            layoutPaste.setVisibility(View.GONE);
             switchToLongClickState(false);
         });
 

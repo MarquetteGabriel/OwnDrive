@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Mes Fichiers</title>
+  <link th:href="@{/style/global.css}" rel="stylesheet" />
+  <link th:href="@{/style/footer-header.css}" rel="stylesheet" />
+</head>
+
+<!--<body onload="makeApiRequest()">-->
+<h2>Mes fichiers :</h2>
+
+<div class="container-default">
+  <ul id="dataList" th:data-path="${path}"></ul>
+</div>
+
+<span th:text="${path}"/>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script th:src="@{/js/requests.js}"></script>
+
+</body>
+</html>

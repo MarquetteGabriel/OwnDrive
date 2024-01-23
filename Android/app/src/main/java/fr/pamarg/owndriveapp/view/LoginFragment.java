@@ -51,7 +51,7 @@ public class LoginFragment extends Fragment {
             }
             else
             {
-                ipAddressEditText.setError("Please enter your IP address");
+                ipAddressEditText.setError("Please enter a valid IP address");
             }
 
         });

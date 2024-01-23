@@ -13,9 +13,9 @@
         android:elevation="10dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingStart="20dp"
+        android:paddingStart="5dp"
         android:paddingTop="15dp"
-        android:paddingEnd="20dp"
+        android:paddingEnd="5dp"
         android:paddingBottom="15dp"
         android:weightSum="4"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,12 +28,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp">
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="70dp"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/rename_button"/>
             </LinearLayout>
@@ -43,12 +41,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp">
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="70dp"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cut_button"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/s_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/copy_button"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/s_paste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/paste_button"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/s_cut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/delete_button"/>
         </LinearLayout>
@@ -59,12 +94,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp">
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/move_button"/>
         </LinearLayout>
@@ -75,12 +108,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp">
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/share_button"/>
         </LinearLayout>
@@ -90,12 +121,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"            
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp">
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="70dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/close_button" />
         </LinearLayout>

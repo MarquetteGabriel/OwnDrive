@@ -47,4 +47,15 @@ public class MainActivityViewModel extends ViewModel {
     public void setIsLongClicked(Boolean isLongClicked) {
         this.isLongClicked.setValue(isLongClicked);
     }
+
+    private MutableLiveData<Boolean> isCopy = new MutableLiveData<>(false);
+
+    public MutableLiveData<Boolean> getIsCopy() {
+        return this.isCopy;
+    }
+
+    public void setNbSelected(Boolean copyState) {
+        this.isCopy.setValue(copyState);
+    }
+
 }

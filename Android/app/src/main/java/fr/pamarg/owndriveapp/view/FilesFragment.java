@@ -91,6 +91,9 @@ public class FilesFragment extends Fragment
         LinearLayout layoutShare = view.findViewById(R.id.s_share);
         LinearLayout layoutDelete = view.findViewById(R.id.s_delete);
         LinearLayout layoutClose = view.findViewById(R.id.s_close);
+        LinearLayout layoutCut = view.findViewById(R.id.s_cut);
+        LinearLayout layoutCopy = view.findViewById(R.id.s_copy);
+        LinearLayout layoutPaste = view.findViewById(R.id.s_paste);
 
 
         layoutAddFolder.setOnClickListener(view1 -> {
@@ -115,32 +118,56 @@ public class FilesFragment extends Fragment
         });
 
         layoutRename.setOnClickListener(view1 -> {
+            if(getNbSelected() == 1)
+            {
+                // TODO : rename selected File
+            }
 
-                });
+        });
 
         layoutMove.setOnClickListener(view1 -> {
-
-                });
+            if(getNbSelected() > 0) {
+                // TODO : move selected Files
+            }
+        });
 
         layoutShare.setOnClickListener(view1 -> {
-
-                });
+            if(getNbSelected() > 0) {
+                // TODO : share selected Files
+            }
+        });
 
         layoutDelete.setOnClickListener(view1 -> {
+            if(getNbSelected() > 0) {
+                // TODO : delete selected Files
+            }
+        });
 
-                });
+        layoutCut.setOnClickListener(view1 -> {
+            if (getNbSelected() > 0) {
+                // TODO : cut selected Files
+            }
+        });
+
+        layoutCopy.setOnClickListener(view1 -> {
+            if (getNbSelected() > 0) {
+                // TODO : copy selected Files
+            }
+        });
+
+        layoutPaste.setOnClickListener(view1 -> {
+            if (getNbSelected() > 0 && Boolean.TRUE.equals(mainActivityViewModel.getIsCopy().getValue())) {
+                // TODO : paste selected Files
+            }
+        });
 
         layoutClose.setOnClickListener(view1 -> {
             uncheckedBoxes();
             switchToLongClickState(false);
-                });
+        });
 
         gridView.setOnItemClickListener(this::gridViewOnClick);
         gridView.setOnItemLongClickListener(this::gridViewOnLongClick);
-
-        gridView.setOnItemClickListener((adapterView, view12, i, l) -> {
-
-        });
 
         binding.executePendingBindings();
     }
@@ -152,6 +179,7 @@ public class FilesFragment extends Fragment
         mainActivityViewModel.setIsLongClicked(true);
         switchToLongClickState(true);
         checkBox.setChecked(true);
+        getNbSelected();
         return true;
     }
 
@@ -248,5 +276,19 @@ public class FilesFragment extends Fragment
             CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
             checkBox.setChecked(false);
         }
+    }
+
+    private int getNbSelected()
+    {
+        int nbSelected = 0;
+        for (int i = 0; i < gridView.getChildCount(); i++) {
+            View checkBoxView = gridView.getChildAt(i);
+            CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+            if(checkBox.isChecked())
+            {
+                nbSelected++;
+            }
+        }
+        return nbSelected;
     }
 }

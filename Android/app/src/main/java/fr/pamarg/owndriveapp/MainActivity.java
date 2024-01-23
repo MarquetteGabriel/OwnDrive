@@ -286,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
 
     @Override
     public void onItemClicked(Folders folders) {
+
         switch (folders.getName())
         {
             default:
@@ -322,5 +323,10 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
         {
             drawerItemList.add(new Folders("home", true, R.drawable.button_folder));
         }
+    }
+
+    private void openFolder(String name)
+    {
+
     }
 }

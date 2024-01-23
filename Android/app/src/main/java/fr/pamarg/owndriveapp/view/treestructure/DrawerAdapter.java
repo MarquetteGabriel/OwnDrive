@@ -72,7 +72,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     padding = ((Files) object).getPadding();
                 }
                 ((ItemViewHolder) holder).bind(drawerItemList.get(position - 1));
-                ((ItemViewHolder) holder).imageView.setPadding(padding,0,0,0);
+                ((ItemViewHolder) holder).contentImageView.setPadding(padding,0,0,0);
                 ((ItemViewHolder) holder).textView.setPadding(10, 0, 0, 0);
             }
         }
@@ -113,42 +113,31 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     {
 
         private final TextView textView;
-        private final ImageView imageView;
+        private final ImageView contentImageView;
+        private final ImageView arrowImageView;
 
         public ItemViewHolder(View view)
         {
             super(view);
             view.setOnClickListener(this);
             textView = view.findViewById(R.id.item_text);
-            imageView = view.findViewById(R.id.item_icon);
+            contentImageView = view.findViewById(R.id.item_icon);
+            arrowImageView = view.findViewById(R.id.item_arrow);
+
+            arrowImageView.setOnClickListener(this::manageFolders);
         }
 
-        public void bind(Object object)
+        private void manageFolders(View view)
         {
-            if(object.getClass() == Folders.class)
-            {
-                textView.setText(((Folders) object).getName());
-                imageView.setImageResource(((Folders) object).getIcon());
-            }
-            else
-            {
-                textView.setText(((Files) object).getName());
-                imageView.setImageResource(((Files) object).getIcon());
-            }
-
-        }
-
-        @Override
-        public void onClick(View view) {
             int position = getAdapterPosition() - 1;
             if(drawerItemList.get(position).getClass() == Folders.class)
             {
                 Folders folders = (Folders) drawerItemList.get(position);
                 if(folders.hasSubItems()) {
                     if (!folders.isExpanded()) {
-                        openFolder(folders, position);
+                        openFolder(this, folders, position);
                     } else {
-                        closeFolder(folders, position);
+                        closeFolder(this, folders, position);
                     }
                 }
                 else
@@ -157,11 +146,34 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             }
         }
+
+        public void bind(Object object)
+        {
+            if(object.getClass() == Folders.class)
+            {
+                textView.setText(((Folders) object).getName());
+                contentImageView.setImageResource(((Folders) object).getIcon());
+                arrowImageView.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                textView.setText(((Files) object).getName());
+                contentImageView.setImageResource(((Files) object).getIcon());
+                arrowImageView.setVisibility(View.GONE);
+            }
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            // TODO : Close Drawer and open the folder
+        }
     }
 
 
-    private void openFolder(Folders folders, int position)
+    private void openFolder(ItemViewHolder holder, Folders folders, int position)
     {
+        ((ItemViewHolder) holder).arrowImageView.setImageResource(R.drawable.open_folder_arrow);
         folders.setExpanded(true);
         List<Files> subItems = folders.getSubItems();
         List<Folders> subFolders = folders.getSubFolders();
@@ -179,14 +191,14 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemRangeInserted(position + 2, subItems.size() + subFolders.size());
     }
 
-    private void closeFolder(Folders folders, int position) {
+    private void closeFolder(ItemViewHolder holder, Folders folders, int position) {
         List<Files> subItems = folders.getSubItems();
         List<Folders> subFolders = folders.getSubFolders();
         int insertPosition = position + 1;
         paddingFolders = folders.getPadding() - 50;
         for (Folders subFolder : subFolders) {
             if (subFolder.isExpanded()) {
-                closeFolder(subFolder, insertPosition);
+                closeFolder(holder, subFolder, insertPosition);
             }
             drawerItemList.remove(insertPosition);
 
@@ -195,6 +207,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             drawerItemList.remove(insertPosition);
         }
         folders.setExpanded(false);
+        ((ItemViewHolder) holder).arrowImageView.setImageResource(R.drawable.close_folder_arrow);
         notifyItemRangeRemoved(position + 2, subItems.size() + subFolders.size());
     }
 

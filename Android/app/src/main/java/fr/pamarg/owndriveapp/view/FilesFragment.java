@@ -59,8 +59,6 @@ public class FilesFragment extends Fragment
         View view = binding.getRoot();
         mainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
 
-        mainActivityViewModel.setIsLongClicked(false);
-
         return view;
     }
 
@@ -247,7 +245,6 @@ public class FilesFragment extends Fragment
     {
         Toast.makeText(requireContext().getApplicationContext(), textAnswer[position], Toast.LENGTH_SHORT).show();
         CheckBox checkBox = view.findViewById(R.id.checkbox);
-        mainActivityViewModel.setIsLongClicked(true);
         switchToLongClickState(true);
         checkBox.setChecked(true);
         getNbSelected();
@@ -277,7 +274,7 @@ public class FilesFragment extends Fragment
         }
     }
 
-    private String cropTextLength(String text)
+    String cropTextLength(String text)
     {
         if (text.length() > 17)
         {
@@ -349,7 +346,7 @@ public class FilesFragment extends Fragment
         }
     }
 
-    private int getNbSelected()
+    int getNbSelected()
     {
         int nbSelected = 0;
         for (int i = 0; i < gridView.getChildCount(); i++) {

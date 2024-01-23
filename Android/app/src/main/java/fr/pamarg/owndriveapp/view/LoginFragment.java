@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import fr.pamarg.owndriveapp.Network.Connection;
 import fr.pamarg.owndriveapp.R;
 import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
 
@@ -36,9 +38,13 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login, container, false);
         mainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
+        Connection connection = new Connection(requireContext(), mainActivityViewModel);
+        connection.getIpAddress();
 
         Button loginButton = view.findViewById(R.id.loginButton);
         EditText ipAddressEditText = view.findViewById(R.id.loginEditText);
+
+        TextView getIpTextView = view.findViewById(R.id.getIpTextView);
 
         loginButton.setOnClickListener(v -> {
             String ip = ipAddressEditText.getText().toString();
@@ -55,11 +61,15 @@ public class LoginFragment extends Fragment {
             }
 
         });
+
+        getIpTextView.setOnClickListener(v -> {
+            ipAddressEditText.setText(mainActivityViewModel.getIpAddress().getValue());
+        });
         return view;
     }
 
 
-    private boolean validIp(String ip)
+    boolean validIp(String ip)
     {
         String[] ipSplit = ip.split("\\.");
         if(ipSplit.length != 4)

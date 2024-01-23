@@ -9,7 +9,7 @@ import fr.pamarg.owndriveapp.model.treeManager.directoryfiles.Folders;
 public class MainActivityViewModel extends ViewModel {
 
     private final MutableLiveData<String> ipAddress = new MutableLiveData<>();
-    private MutableLiveData<Folders> treeFolders = new MutableLiveData<>();
+    private final MutableLiveData<Folders> treeFolders = new MutableLiveData<>();
 
     public LiveData<String> getIpAddress() {
         return ipAddress;
@@ -39,23 +39,10 @@ public class MainActivityViewModel extends ViewModel {
         return this.treeFolders;
     }
 
-    private MutableLiveData<Boolean> isLongClicked = new MutableLiveData<>(false);
-    public MutableLiveData<Boolean> getIsLongClicked() {
-        return this.isLongClicked;
-    }
-
-    public void setIsLongClicked(Boolean isLongClicked) {
-        this.isLongClicked.setValue(isLongClicked);
-    }
-
-    private MutableLiveData<Boolean> isCopy = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> isCopy = new MutableLiveData<>(false);
 
     public MutableLiveData<Boolean> getIsCopy() {
         return this.isCopy;
-    }
-
-    public void setNbSelected(Boolean copyState) {
-        this.isCopy.setValue(copyState);
     }
 
 }

@@ -1,7 +1,6 @@
 package fr.pamarg.owndriveapp;
 
 import android.Manifest;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -159,10 +158,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.Dra
 
             selectTab = 1;
 
-            SharedPreferences sharedPreferences = getSharedPreferences("OwnDrive", MODE_PRIVATE);
-            String ip = sharedPreferences.getString("ip", "192.168.1.23");
-
-            JsonManager.getTreeFiles(mainActivityViewModel, ip);
+            JsonManager.getTreeFiles(mainActivityViewModel, mainActivityViewModel.getIpAddress().getValue());
             addItems();
             drawerAdapter.notifyDataSetChanged();
 

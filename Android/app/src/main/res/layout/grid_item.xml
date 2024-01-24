@@ -59,7 +59,7 @@
                     android:layout_height="20dp"
                     android:text="file"
                     android:textAlignment="center"
-                    android:textColor="#F2000000"
+                    android:textColor="@color/dark"
                     android:textSize="8sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

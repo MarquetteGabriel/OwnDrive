@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.pamarg.owndriveapp.Network.CallAPIManager;
 import fr.pamarg.owndriveapp.R;
 import fr.pamarg.owndriveapp.view.gridview.GridViewAdapter;
 import fr.pamarg.owndriveapp.viewmodel.MainActivityViewModel;
@@ -37,12 +38,15 @@ public class FilesFragment extends Fragment
     GridViewAdapter gridViewAdapter;
     ViewDataBinding binding;
     GridView gridView;
+    String StringEditText;
     String[] filesOfCurrentPage, filesName;
     int[] filesImages;
 
     String[] textAnswer = {"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
 
     MainActivityViewModel mainActivityViewModel;
+    private List<String> listOfSelectedFiles = new ArrayList<>();
+
     public FilesFragment() {
         // Required empty public constructor
     }
@@ -73,8 +77,7 @@ public class FilesFragment extends Fragment
         gridView = view.findViewById(R.id.grid_view);
 
         List<String> filesNameList = new ArrayList<>();
-        //String[] filesOfCurrentPage = CallAPIManager.getFilesOfCurrentPage(mainActivityViewModel.getIpAddress().getValue());
-        filesOfCurrentPage = new String[]{"Documents vraiment très personnel", "Images.jpg", "Videos.mp4", "Music.mp3", "Others.png", "Documents.docx", "Images.txt", "Videos.pdf", "Music", "Others.api", "Documents.java", "Images", "Videos.c", "Music", "Others"};
+        filesOfCurrentPage = CallAPIManager.getFilesOfCurrentPage(mainActivityViewModel);
         for (String fileName : filesOfCurrentPage)
         {
             filesNameList.add(cropTextLength(fileName));
@@ -92,8 +95,6 @@ public class FilesFragment extends Fragment
         LinearLayout layoutAddFile = view.findViewById(R.id.ns_add_file);
         LinearLayout layoutAddPeople = view.findViewById(R.id.ns_add_people);
 
-        LinearLayout layoutMore = view.findViewById(R.id.ns_more);
-
         LinearLayout layoutRename = view.findViewById(R.id.s_rename);
         LinearLayout layoutMove = view.findViewById(R.id.s_move);
         LinearLayout layoutShare = view.findViewById(R.id.s_share);
@@ -110,12 +111,59 @@ public class FilesFragment extends Fragment
 
 
         layoutAddFolder.setOnClickListener(view1 -> {
-            // TODO: add folder
-            //JsonManager.getTreeFiles(mainActivityViewModel, mainActivityViewModel.getIpAddress().getValue());
+            final Dialog dialog = new Dialog(requireContext());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.rename_dialog);
+
+            EditText renamEditText = dialog.findViewById(R.id.renamEditText);
+            ImageView validImageView = dialog.findViewById(R.id.validButton);
+
+            validImageView.setOnClickListener(view2 -> {
+                StringEditText = renamEditText.getText().toString();
+                CallAPIManager.createFolder(mainActivityViewModel.getIpAddress().getValue(), StringEditText);
+                // TODO : Mkdir nom du dossier
+
+
+                String[] tempString = new String[filesName.length + 1];
+                System.arraycopy(filesName, 0, tempString, 0, filesName.length);
+                tempString[tempString.length - 1] = StringEditText;
+                filesName = tempString;
+                int[] filesImages = setFilesImages(filesName);
+                gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), filesName, filesImages);
+                gridView.setAdapter(gridViewAdapter);
+
+                dialog.dismiss();
+            });
+
+            dialog.show();
         });
 
         layoutAddFile.setOnClickListener(view1 -> {
-            // TODO: add file
+            final Dialog dialog = new Dialog(requireContext());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.rename_dialog);
+
+            EditText renamEditText = dialog.findViewById(R.id.renamEditText);
+            ImageView validImageView = dialog.findViewById(R.id.validButton);
+
+            validImageView.setOnClickListener(view2 -> {
+                StringEditText = renamEditText.getText().toString();
+                // TODO : touch nom du file
+
+                String[] tempString = new String[filesName.length + 1];
+                System.arraycopy(filesName, 0, tempString, 0, filesName.length);
+                tempString[tempString.length - 1] = StringEditText;
+                filesName = tempString;
+                int[] filesImages = setFilesImages(filesName);
+                gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), filesName, filesImages);
+                gridView.setAdapter(gridViewAdapter);
+
+                dialog.dismiss();
+            });
+
+            dialog.show();
         });
 
         layoutAddPeople.setOnClickListener(view1 -> {
@@ -131,7 +179,6 @@ public class FilesFragment extends Fragment
             layoutAddFile.setVisibility(View.GONE);
             layoutAddFolder.setVisibility(View.GONE);
             layoutAddPeople.setVisibility(View.GONE);
-            layoutMore.setVisibility(View.GONE);
 
             layoutTop.setPadding(20,20,20,20);
 
@@ -152,8 +199,6 @@ public class FilesFragment extends Fragment
                 gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), fileNamesFiltered, filesImagesFiltered);
                 gridView.setAdapter(gridViewAdapter);
             });
-
-            // TODO: search
         });
 
         imageCloseSearch.setOnClickListener(view1 -> {
@@ -165,17 +210,12 @@ public class FilesFragment extends Fragment
             layoutAddFile.setVisibility(View.VISIBLE);
             layoutAddFolder.setVisibility(View.VISIBLE);
             layoutAddPeople.setVisibility(View.VISIBLE);
-            layoutMore.setVisibility(View.VISIBLE);
 
             layoutTop.setPadding(20,40,20,40);
             editTextSearch.setText("");
 
             gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), filesName, filesImages);
             gridView.setAdapter(gridViewAdapter);
-        });
-
-        layoutMore.setOnClickListener(view1 -> {
-            // TODO: more
         });
 
         layoutRename.setOnClickListener(view1 -> {
@@ -190,22 +230,34 @@ public class FilesFragment extends Fragment
                 ImageView validImageView = dialog.findViewById(R.id.validButton);
 
                 validImageView.setOnClickListener(view2 -> {
-
-                    String newFilename = renamEditText.getText().toString();
-                    // TODO : requete to rename file
+                    StringEditText = renamEditText.getText().toString();
+                    if(StringEditText != null || !StringEditText.isEmpty())
+                    {
+                        for (int i = 0; i < gridView.getChildCount(); i++) {
+                            View checkBoxView = gridView.getChildAt(i);
+                            CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+                            if(checkBox.isChecked())
+                            {
+                                filesName[i] = StringEditText;
+                                filesImages = setFilesImages(filesName);
+                                gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), filesName, filesImages);
+                                gridView.setAdapter(gridViewAdapter);
+                                // TODO : requete API de move + rename
+                                break;
+                            }
+                        }
+                    }
 
                     uncheckedBoxes();
+                    switchToLongClickState(false);
                     layoutCut.setVisibility(View.VISIBLE);
                     layoutCopy.setVisibility(View.VISIBLE);
                     layoutPaste.setVisibility(View.GONE);
-                    switchToLongClickState(false);
-
                     dialog.dismiss();
                 });
 
                 dialog.show();
             }
-
         });
 
         layoutMove.setOnClickListener(view1 -> {
@@ -222,12 +274,14 @@ public class FilesFragment extends Fragment
 
         layoutDelete.setOnClickListener(view1 -> {
             if(getNbSelected() > 0) {
-                // TODO : delete selected Files
+                deleteFiles();
             }
         });
 
         layoutCut.setOnClickListener(view1 -> {
             if (getNbSelected() > 0) {
+                selectedFiles();
+                deleteFiles();
                 // TODO : cut selected Files
                 layoutCut.setVisibility(View.GONE);
                 layoutCopy.setVisibility(View.GONE);
@@ -237,6 +291,7 @@ public class FilesFragment extends Fragment
 
         layoutCopy.setOnClickListener(view1 -> {
             if (getNbSelected() > 0) {
+                selectedFiles();
                 // TODO : copy selected Files
                 layoutCut.setVisibility(View.GONE);
                 layoutCopy.setVisibility(View.GONE);
@@ -269,7 +324,6 @@ public class FilesFragment extends Fragment
 
     private boolean gridViewOnLongClick(AdapterView<?> adapterView, View view, int position, long l)
     {
-        Toast.makeText(requireContext().getApplicationContext(), textAnswer[position], Toast.LENGTH_SHORT).show();
         CheckBox checkBox = view.findViewById(R.id.checkbox);
         mainActivityViewModel.setIsLongClicked(true);
         switchToLongClickState(true);
@@ -279,7 +333,6 @@ public class FilesFragment extends Fragment
     }
 
     private void gridViewOnClick(AdapterView<?> adapterView, View view12, int position, long l) {
-        Toast.makeText(requireContext().getApplicationContext(), textAnswer[position], Toast.LENGTH_SHORT).show();
         if(!textAnswer[position].contains(".")) {
             //TODO : request to api new folder and substitute
         }
@@ -385,5 +438,38 @@ public class FilesFragment extends Fragment
             }
         }
         return nbSelected;
+    }
+
+    private void selectedFiles()
+    {
+        listOfSelectedFiles.clear();
+        for (int i = 0; i < gridView.getChildCount(); i++) {
+            View checkBoxView = gridView.getChildAt(i);
+            CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+            if(checkBox.isChecked())
+            {
+                TextView textView = checkBoxView.findViewById(R.id.textFiles);
+                listOfSelectedFiles.add(textView.getText().toString());
+            }
+
+        }
+    }
+
+    private void deleteFiles()
+    {
+        int index = 0;
+        filesName = new String[filesImages.length - getNbSelected()];
+        for (int i = 0; i < gridView.getChildCount(); i++) {
+            View checkBoxView = gridView.getChildAt(i);
+            CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+            if (!checkBox.isChecked()) {
+                TextView textView = checkBoxView.findViewById(R.id.textFiles);
+                filesName[index++] = textView.getText().toString();
+                // TODO : requete API de delete
+            }
+        }
+        filesImages = setFilesImages(filesName);
+        gridViewAdapter = new GridViewAdapter(requireContext().getApplicationContext(), filesName, filesImages);
+        gridView.setAdapter(gridViewAdapter);
     }
 }

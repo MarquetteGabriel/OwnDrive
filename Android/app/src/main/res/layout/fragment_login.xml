@@ -28,9 +28,9 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:text=""
-            android:textColor="#3E3E3E"
+            android:textColor="@color/dark"
             android:hint="@string/enter_your_ip_address"
-            android:textColorHint="#3E3E3E" />
+            android:textColorHint="@color/dark" />
     </androidx.cardview.widget.CardView>
 
     <Button
@@ -64,7 +64,7 @@
         android:text="@string/app_name"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#3E3E3E"
+        android:textColor="@color/dark"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/cardViewLogin"
@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#1C1C1C"
+        android:textColor="@color/dark"
         app:layout_constraintTop_toBottomOf="@+id/loginButton"
         app:layout_constraintVertical_bias="0.136" />
 
